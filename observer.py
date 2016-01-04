@@ -17,12 +17,12 @@ class Observer(object):
 
         event_name = event.__name__ or event.__class__.__name__
 
-        # se não existe uma lista de eventos com determinado nome ...
+        # se nao existe uma lista de eventos com determinado nome ...
         if event_name not in self.events:
             self.events[event_name] = []
 
         self.events[event_name].append(event)
-        
+
         if event_name not in dir(self):
             # cria metodo generico dinamicamente para acionar eventos de um determinado nome
             setattr(self, event_name, lambda: self.action(event_name))
@@ -31,7 +31,7 @@ class Observer(object):
         """Metodo que aciona uma lista de eventos (por nome)"""
         for e in self.events[name]:
             e.action()
-            
+
 class Hello(Event):
     __name__ = 'hello'
 
