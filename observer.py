@@ -53,3 +53,5 @@ obj.add(hello2)
 
 # aciona os eventos de nome hello
 obj.hello() # ou obj.action('hello')
+# Ai dentro
+# Papai Noel
