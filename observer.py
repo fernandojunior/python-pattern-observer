@@ -22,9 +22,10 @@ class Observer(object):
             self.events[event_name] = []
 
         self.events[event_name].append(event)
-
-        # criando metodo dinamicamente para acionar eventos de um determinado nome
-        setattr(self, event_name, lambda: self.action(event_name))
+        
+        if event_name not in dir(self):
+            # cria metodo generico dinamicamente para acionar eventos de um determinado nome
+            setattr(self, event_name, lambda: self.action(event_name))
 
     def action(self, name):
         """Metodo que aciona uma lista de eventos (por nome)"""
