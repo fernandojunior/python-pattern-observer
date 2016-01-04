@@ -2,9 +2,9 @@ __author__ = 'Fernando Felix do Nascimento Junior'
 __license__ = 'MIT'
 
 class Event(object):
-    __name__ = None # nome opcional do evento
+    __name__ = None # opcional
 
-    def action(self): # metodo para acionar um evento
+    def action(self): # aciona o evento
         pass
 
 class Observer(object):
@@ -13,7 +13,7 @@ class Observer(object):
         self.events = {}  # dicionario para armazenar eventos
 
     def add(self, event):
-        """Metodo para adicionar um evento"""
+        """Adiciona um evento"""
 
         event_name = event.__name__ or event.__class__.__name__
 
@@ -40,15 +40,16 @@ class Hello(Event):
     def action(self):
         print(self.msg)
 
-"""
-Exemplo de uso no terminal:
->>> hello = Hello()
->>> hello2 = Hello()
->>> hello2.msg = 'Papai noel'
->>> obj = Observer()
->>> obj.add(hello)
->>> obj.add(hello2)
->>> obj.hello() # ou: obj.action('hello')
-Ai dentro
-Papai noel
-"""
+# criando dois eventos
+hello = Hello()
+hello2 = Hello()
+
+hello2.msg = 'Papai noel'
+
+# criando observer
+obj = Observer()
+obj.add(hello)
+obj.add(hello2)
+
+# aciona os eventos de nome hello
+obj.hello() # ou obj.action('hello')
