@@ -68,24 +68,21 @@ Observer armazena apenas um evento por nome.
 
 class Event2(object):
 
-    def __init__(self, name, handler, parent=None):
+    def __init__(self, name, handler):
         self.name = name
         self.call = handler
-        self.parent = parent
 
 
 class Observer2(object):
 
-    def __init__(self, parent=None):
-        self.parent = parent
+    def __init__(self):
         self.events = {}  # dicionario para armazenar eventos
 
     def add(self, event):
         """Adiciona um evento"""
-        if event.name not in self.events:
-            self.events[event.name] = event
-            # metodo generico para acionar um evento
-            setattr(self, event.name, self.call(event.name))
+        self.events[event.name] = event
+        # metodo generico para acionar um evento
+        setattr(self, event.name, self.call(event.name))
 
     def on(self, *args):
         if len(args) == 1:
@@ -93,7 +90,7 @@ class Observer2(object):
         elif len(args) == 2:
             name = args[0]
             handler = args[1]
-            self.add(Event2(name, handler, self.parent))
+            self.add(Event2(name, handler))
 
     def call(self, name):
         """Metodo que aciona um evento por nome"""
@@ -109,7 +106,7 @@ def f2(a, b):
     assert(b == '2')
 
 
-e = Event2('e', f, None)
+e = Event2('e', f)
 e2 = Event2('e2', f2)
 
 o = Observer2()
