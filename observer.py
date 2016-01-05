@@ -68,9 +68,13 @@ Observer armazena apenas um evento por nome.
 
 class Event2(object):
 
-    def __init__(self, name, handler=None):
+    def __init__(self, name, call=None):
         self.name = name
-        self.call = handler
+        if call:
+            self.call = call
+
+    def call(self):
+        pass
 
 
 class Observer2(object):
