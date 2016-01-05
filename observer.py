@@ -1,11 +1,13 @@
 __author__ = 'Fernando Felix do Nascimento Junior'
 __license__ = 'MIT'
 
-class Event(object):
-    __name__ = None # opcional
 
-    def action(self): # aciona o evento
+class Event(object):
+    __name__ = None  # opcional
+
+    def action(self):  # aciona o evento
         pass
+
 
 class Observer(object):
 
@@ -24,7 +26,7 @@ class Observer(object):
         self.events[event_name].append(event)
 
         if event_name not in dir(self):
-            # cria metodo generico dinamicamente para acionar eventos de um determinado nome
+            # cria metodo generico para acionar eventos de um determinado nome
             setattr(self, event_name, lambda: self.action(event_name))
 
     def action(self, name):
@@ -32,20 +34,19 @@ class Observer(object):
         for e in self.events[name]:
             e.action()
 
+
 class Hello(Event):
     __name__ = 'hello'
 
-    def __init__(self):
-        self.msg = 'Ai dentro'
+    def __init__(self, msg=None):
+        self.msg = msg or 'Ai dentro'
 
     def action(self):
         print(self.msg)
 
 # criando dois eventos
 hello = Hello()
-hello2 = Hello()
-
-hello2.msg = 'Papai noel'
+hello2 = Hello('Papai noel')
 
 # criando observer
 obj = Observer()
@@ -53,6 +54,6 @@ obj.add(hello)
 obj.add(hello2)
 
 # aciona os eventos de nome hello
-obj.hello() # ou obj.action('hello')
+obj.hello()  # ou obj.action('hello')
 # Ai dentro
 # Papai Noel
