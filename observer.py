@@ -14,11 +14,8 @@ argumentos e o Observer armazena apenas um evento por nome.
 class Event(object):
 
     def __init__(self, name, call=None):
-        self.name = name or self.__class__.__name__
+        self.name = name
         self.call = call or self.call
-
-    def call(self):
-        pass
 
 
 class Observer(object):
@@ -29,14 +26,11 @@ class Observer(object):
         """Adiciona um evento"""
         self.events[event.name] = event
         # metodo generico para acionar um evento
-        setattr(self, event.name, self.call(event.name))
+        setattr(self, event.name, event.call)
 
     def on(self, *args):
         if len(args) == 1:
-            return self.call(args[0])
+            return self.events[args[0]].call
+            # return self.call(args[0])
         else:
             self.add(Event(*args))
-
-    def call(self, name):
-        """Aciona um evento por nome"""
-        return self.events[name].call
