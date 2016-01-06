@@ -1,11 +1,17 @@
 """
-Versao 2
-Acionamento de um evento permite passagem de argumentos.
-Observer armazena apenas um evento por nome.
+Implementacao do padrao de projeto observer em Python.
+
+Nessa versao, o acionamento de um evento Event#call permite passagem de
+argumentos e o Observer armazena apenas um evento por nome.
+
+::author::
+    Fernando Felix do Nascimento Junior
+::license::
+    MIT License
 """
 
 
-class Event2(object):
+class Event(object):
 
     def __init__(self, name, call=None):
         self.name = name or self.__class__.__name__
@@ -15,7 +21,7 @@ class Event2(object):
         pass
 
 
-class Observer2(object):
+class Observer(object):
 
     def __init__(self):
         self.events = {}  # dicionario para armazenar eventos
@@ -32,7 +38,7 @@ class Observer2(object):
         elif len(args) == 2:
             name = args[0]
             handler = args[1]
-            self.add(Event2(name, handler))
+            self.add(Event(name, handler))
 
     def call(self, name):
         """Metodo que aciona um evento por nome"""
@@ -48,15 +54,20 @@ def f2(a, b):
     assert(b == '2')
 
 
-e = Event2('e', f)
-e2 = Event2('e2', f2)
+e = Event('e', f)
+e2 = Event('e2', f2)
 
-o = Observer2()
-o.add(e)
-o.add(e2)
+o = Observer()
+o.add(e)  # publica o evento 'e'
+o.on('e2', f2)  # cria um evento 'e2' dinamicamente e o publica
 
-# acionando e
-e.call(1); o.call('e')(1); o.on('e')(1); o.e(1)
+# acionando 'e'
+e.call(1)
+o.call('e')(1)
+o.on('e')(1)
+o.e(1)
 
-# acionando e2
-e2.call(1, '2'); o.call('e2')(1, '2'); o.on('e2')(1, '2'); o.e2(1, '2')
+# acionando 'e2'
+o.call('e2')(1, '2')
+o.on('e2')(1, '2')
+o.e2(1, '2')
