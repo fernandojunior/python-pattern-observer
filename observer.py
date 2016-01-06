@@ -23,8 +23,7 @@ class Event(object):
 
 class Observer(object):
 
-    def __init__(self):
-        self.events = {}  # dicionario para armazenar eventos
+    events = {}
 
     def add(self, event):
         """Adiciona um evento"""
