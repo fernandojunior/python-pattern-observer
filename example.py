@@ -2,6 +2,7 @@ from observer import Observer
 
 
 class Window(Observer):
+
     def __init__(self):
         self.listeners()
 

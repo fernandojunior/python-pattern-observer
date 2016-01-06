@@ -34,11 +34,9 @@ class Observer(object):
     def on(self, *args):
         if len(args) == 1:
             return self.call(args[0])
-        elif len(args) == 2:
-            name = args[0]
-            handler = args[1]
-            self.add(Event(name, handler))
+        else:
+            self.add(Event(*args))
 
     def call(self, name):
-        """Metodo que aciona um evento por nome"""
+        """Aciona um evento por nome"""
         return self.events[name].call
