@@ -2,20 +2,30 @@
 
 
 class Event():
+
     def __init__(self, source):
-        self.source = source
+        self.source = source  # fonte do evento
+
+    def call(self, name):  # aciona observers para este evento
+        for o in self.source.observers:
+            getattr(o, name)(self)
 
 
 # Observable
 class Telefone():
+    events = {}  # Observable possui lista de eventos
     observers = []
 
-    # def on(self, event, do):
+    def __init__(self):
+        self.events['toca'] = Event(self)
+        # self.events['atende'] = Event(self)
 
-    def toca(self):
-        event = Event(self)
-        for o in self.observers:
-            o.tocou(event)
+    def on(self, event_name, action_name):
+        def f():
+            event = self.events[event_name]
+            event.call(action_name)
+
+        setattr(self, event_name, f)
 
     def atende(self):
         event = Event(self)
@@ -46,6 +56,7 @@ class App():
 
     def __init__(self):
         telefone = Telefone()
+        telefone.on('toca', 'tocou')
         telefone.observers.append(Pessoa())
         telefone.observers.append(Secretaria())
         telefone.toca()
