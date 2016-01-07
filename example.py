@@ -21,7 +21,7 @@ from observer import Observable
 
 # Event == Topic
 # Observable == Subject == Source == Event Source == Provider
-# Observer == Listener == Subscriber == Handler
+# Observer == Listener == Subscriber
 
 class Window(Observable):
     """
