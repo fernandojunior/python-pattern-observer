@@ -112,7 +112,7 @@ print('end ###########################')
 def a(vai=None):
     print('changed')
 
-w.events['click'].on(a)  # rebinding
+w.events['click'].bind(a)  # rebinding
 w.events['click'].trigger()
 # w.click(vai=1)
 

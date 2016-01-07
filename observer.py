@@ -19,7 +19,7 @@ class Event(object):
     def __init__(self, call=None):
         self.call = call  # subscriber/listener/observer handler/callback
 
-    def on(self, call):
+    def bind(self, call):
         self.call = call
 
     def trigger(self, *args, **kwargs):  # notify the observer to some action
