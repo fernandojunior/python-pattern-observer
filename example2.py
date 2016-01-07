@@ -10,33 +10,31 @@ class WindowEvent(Event):
     def __init__(self, window):
         Event.__init__(self, self.__class__.__name__.lower())
         self.window = window
-        self.window.add(self)
+        assert(isinstance(self.window, Window))
 
 
 class Enviar(WindowEvent):
 
     def call(self, a):
-        assert(a == '1')
+        return a
 
 
 class Receber(WindowEvent):
 
     def call(self, a, b, c):
-        assert(a == 'a')
-        assert(b == 'b')
-        assert(c == 2)
+        return a, b, c
 
 
 class Window(Observable):
 
-    def __init__(self):
-        self.listeners()
+    def add(self, event):
+        Observable.add(self, event.__class__.__name__.lower(), event.call)
 
-    def listeners(self):
-        Enviar(self)
-        Receber(self)
+    def __init__(self):
+        self.add(Enviar(self))
+        self.add(Receber(self))
 
 
 w = Window()
-w.enviar('1')
-w.receber('a', 'b', 2)
+assert(w.enviar('1') == '1')
+assert(w.receber('a', 'b', 2) == ('a', 'b', 2))

@@ -30,20 +30,18 @@ class Event(object):
 class Observable(object):
     """Observable or subject or provider or event source/generator"""
 
-    events = []
+    events = {}
 
-    def add(self, event):  # add event listener
-        self.events.append(event)
-        setattr(self, event.name, event.trigger)  # event trigger: self.event()
-        setattr(self, event.name + '_', event)  # event instance: self.event_
+    def add(self, name, handler):  # add event listener (just the handler)
+        event = Event(name, handler)
+        self.events[name] = event
+        setattr(self, name, event.trigger)  # event trigger: self.event()
 
     def on(self, *args):
         if len(args) == 1:
-            for e in self.events:
-                if e.name == args[0]:
-                    return e.call
+            return self.events[args[0]].call
         else:
-            self.add(Event(*args))
+            self.add(*args)
 
     def trigger(self, *args, **kargs):
-        return getattr(self, args[0] + '_').trigger(*args[1:], **kargs)
+        return self.events[args[0]].trigger(*args[1:], **kargs)

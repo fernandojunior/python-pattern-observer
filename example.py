@@ -89,19 +89,19 @@ w.click(vai=1)  # publicando mensagem/evento click
 # publishing a message under a given topic
 
 print('publishing with trigger ###########################')
-w.receber_.trigger('a', 'b', 2)
+w.events['receber'].trigger('a', 'b', 2)
 w.trigger('receber', 'a', 'b', 2)
 w.publish('receber', 'a', 'b', 2)
 
-w.click_.trigger(vai=1)
+w.events['click'].trigger(vai=1)
 w.trigger('click', vai=1)  # publicando mensagem/evento click
 w.publish('click', vai=1)  # publicando mensagem/evento click
 
-w.click2_.trigger(2, vai=3)
+w.events['click2'].trigger(2, vai=3)
 w.trigger('click2', 2, vai=3)
 w.publish('click2', 2, vai=3)
 
-w.click3_.trigger()
+w.events['click3'].trigger()
 w.trigger('click3')
 w.publish('click3')
 print('end ###########################')
@@ -112,8 +112,8 @@ print('end ###########################')
 def a(vai=None):
     print('changed')
 
-w.click_.on(a)
-w.click_.trigger()
+w.events['click'].on(a)  # rebinding
+w.events['click'].trigger()
 # w.click(vai=1)
 
 # assert(w.click == w.on('click'))
