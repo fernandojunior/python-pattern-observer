@@ -11,11 +11,17 @@ argumentos e o Observer armazena apenas um evento por nome.
 """
 
 
-class Event(object):
+class Event(object):  # event/topic
 
     def __init__(self, name, call=None):
         self.name = name
-        self.call = call or self.call
+        self.call = call or self.call  # handler/subscriber/listener/observer
+
+    def on(self, call):
+        self.call = call
+
+    def trigger(self, *args, **kwargs):
+        return self.call(*args, **kwargs)
 
 
 class Observer(object):
@@ -23,14 +29,16 @@ class Observer(object):
     events = {}
 
     def add(self, event):
-        """Adiciona um evento"""
         self.events[event.name] = event
         # metodo generico para acionar um evento
         setattr(self, event.name, event.call)
+        setattr(self, event.name + '_', event)
 
     def on(self, *args):
         if len(args) == 1:
             return self.events[args[0]].call
-            # return self.call(args[0])
         else:
             self.add(Event(*args))
+
+    def trigger(self, *args, **kargs):
+        return self.events[args[0]].trigger(*args[1:], **kargs)

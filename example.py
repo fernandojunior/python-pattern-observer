@@ -2,6 +2,8 @@ from observer import Observer
 
 
 # https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
+# http://api.jquery.com/trigger/
+# http://stackoverflow.com/questions/12627443/jquery-click-vs-onclick
 
 Provider = Observer
 
@@ -18,8 +20,8 @@ class Window(Provider):
     def subscribe(self, event, subscriber):
         self.on(event, subscriber)
 
-    def publish(self, event, data):
-        self.trigger(event, data)
+    def publish(self, *args, **kargs):
+        return self.trigger(*args, **kargs)
 
     def buttonenviar(self, a):
         assert(a == '1')
@@ -69,22 +71,37 @@ w.subscribe('click3', w.clicked3)
 
 # // Publishers are in charge of publishing topics or notifications of
 # // interest to the application.
-w.publish('receber', ['a', 'b', 2])
 w.on('receber')('a', 'b', 2)  # publication
 w.enviar('1')  # publica mensagem no evento/topico
 w.click(vai=1)  # publicando mensagem/evento click
-w.publish('click', {'vai': 1})  # publicando mensagem/evento click
-w.publish('click2', [1, {'vai': 1}])  # publicando mensagem/evento click
-w.trigger('click3')
 
+print('publishing with trigger ###########################')
+w.receber_.trigger('a', 'b', 2)
+w.trigger('receber', 'a', 'b', 2)
+w.publish('receber', 'a', 'b', 2)
+
+w.click_.trigger(vai=1)
+w.trigger('click', vai=1)  # publicando mensagem/evento click
+w.publish('click', vai=1)  # publicando mensagem/evento click
+
+w.click2_.trigger(2, vai=3)
+w.trigger('click2', 2, vai=3)
+w.publish('click2', 2, vai=3)
+
+w.click3_.trigger()
+w.trigger('click3')
+w.publish('click3')
+print('end ###########################')
+
+
+# alterando o subscriber/handler do topico/evento clicked
 
 def a(vai=None):
     print('changed')
 
-w.clicked = a  # alterando o subscriber/handler do topico/evento clicked
-w.clicked()
+w.click_.on(a)
+w.click_.trigger()
+# w.click(vai=1)
 
-assert(w.click == w.on('click'))
+# assert(w.click == w.on('click'))
 assert(w.events['click'].call == w.on('click'))
-
-print(dir(w))
