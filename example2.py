@@ -8,7 +8,6 @@ from observer import Event, Observable
 class WindowEvent(Event):
 
     def __init__(self, window):
-        Event.__init__(self, self.__class__.__name__.lower())
         self.window = window
         assert(isinstance(self.window, Window))
 
@@ -27,13 +26,13 @@ class Receber(WindowEvent):
 
 class Window(Observable):
 
-    def add(self, event):
-        Observable.add(self, event.__class__.__name__.lower(), event.call)
-
     def __init__(self):
+        self.title = 'Hello World.'
         self.add(Enviar(self))
         self.add(Receber(self))
 
+    def add(self, event):
+        Observable.add(self, event.__class__.__name__.lower(), event.call)
 
 w = Window()
 assert(w.enviar('1') == '1')
