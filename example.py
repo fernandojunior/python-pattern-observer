@@ -1,4 +1,4 @@
-from observer import Observable
+from observer import Observable, Event
 
 # http://www.dsc.ufcg.edu.br/~jacques/cursos/map/html/arqu/observer.htm
 # https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
@@ -10,9 +10,10 @@ from observer import Observable
 # https://code.jquery.com/jquery-2.1.4.js
 # http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
 # http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
+# http://stackoverflow.com/questions/8065305/whats-the-difference-between-on-and-live-or-bind
 
 
-# TODO: multiplos subscribers por topico
+# TODO: multiplos subscribers/listeners por topico/evento Observable#add
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico
 #    (.stopPropagation or return False)
 # TODO encontrar uma forma de eleminar redundancia em Observable#add
@@ -35,6 +36,9 @@ class Window(Observable):
     def publish(self, *args, **kargs):
         return self.trigger(*args, **kargs)
 
+    def tested(self):
+        print('tested')
+
     def buttonenviar(self, a):
         assert(a == '1')
 
@@ -54,7 +58,10 @@ class Window(Observable):
 
 
 w = Window()
-
+w.test = Event()
+w.test.on(w.tested)
+w.test.trigger()
+# TODO: descritor para adicionar a test a w.events
 
 
 # // Subscribers listen for topics they have subscribed to and
@@ -83,27 +90,31 @@ w.subscribe('click3', w.clicked3)
 
 # // Publishers are in charge of publishing topics or notifications of
 # // interest to the application.
-w.on('receber')('a', 'b', 2)  # publication
-w.enviar('1')  # publica mensagem no evento/topico
-w.click(vai=1)  # publicando mensagem/evento click
+# publication
+w.enviar.trigger('1')  # publica mensagem no evento/topico
+w.click.trigger(vai=1)  # publicando mensagem/evento click
 # publishing a message under a given topic
 
 print('publishing with trigger ###########################')
 w.events['receber'].trigger('a', 'b', 2)
 w.trigger('receber', 'a', 'b', 2)
 w.publish('receber', 'a', 'b', 2)
+w.receber.trigger('a', 'b', 2)
 
 w.events['click'].trigger(vai=1)
 w.trigger('click', vai=1)  # publicando mensagem/evento click
 w.publish('click', vai=1)  # publicando mensagem/evento click
+w.click.trigger(vai=1)
 
 w.events['click2'].trigger(2, vai=3)
 w.trigger('click2', 2, vai=3)
 w.publish('click2', 2, vai=3)
+w.click2.trigger(2, vai=3)
 
 w.events['click3'].trigger()
 w.trigger('click3')
 w.publish('click3')
+w.click3.trigger()
 print('end ###########################')
 
 
@@ -112,7 +123,7 @@ print('end ###########################')
 def a(vai=None):
     print('changed')
 
-w.events['click'].bind(a)  # rebinding
+w.events['click'].on(a)  # rebinding
 w.events['click'].trigger()
 # w.click(vai=1)
 

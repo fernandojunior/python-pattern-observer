@@ -28,12 +28,14 @@ class Window(Observable):
 
     def __init__(self):
         self.title = 'Hello World.'
-        self.add(Enviar(self))
-        self.add(Receber(self))
+        self.on(Enviar)
+        self.on(Receber)
 
-    def add(self, event):
-        Observable.add(self, event.__class__.__name__.lower(), event.call)
+    def on(self, event_class):
+        name = event_class.__name__.lower()
+        event = event_class(self)
+        Observable.on(self, name, event.call)
 
 w = Window()
-assert(w.enviar('1') == '1')
-assert(w.receber('a', 'b', 2) == ('a', 'b', 2))
+assert(w.enviar.trigger('1') == '1')
+assert(w.receber.trigger('a', 'b', 2) == ('a', 'b', 2))
