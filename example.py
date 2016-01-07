@@ -59,9 +59,10 @@ class Window(Observable):
 
 w = Window()
 w.test = Event()
+w.events['test'] = w.test
 w.test.on(w.tested)
 w.test.trigger()
-# TODO: descritor para adicionar a test a w.events
+# TODO: descritor para adicionar a test a w.events automaticamente
 
 
 # // Subscribers listen for topics they have subscribed to and
@@ -73,6 +74,8 @@ w.on('receber', w.buttonreceber)
 w.on('click', w.clicked)  # on: topic - observer/listener
 w.subscribe('click2', w.clicked2)
 w.subscribe('click3', w.clicked3)
+# TODO w.on(['enviar1', 'enviar2'], w.buttonenviar)
+# TODO w.on([enviar1, enviar2], w.buttonenviar)
 
 # on(topic, func)
 #    Subscribe to events of interest with a specific topic name and a
