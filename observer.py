@@ -11,11 +11,11 @@ argumentos e o Observer armazena apenas um evento por nome.
 """
 
 
-class Event(object):  # event/topic
+class Event(object):  # event or topic
 
     def __init__(self, name, call=None):
         self.name = name
-        self.call = call or self.call  # handler/subscriber/listener/observer
+        self.call = call or self.call  # handler or subscriber or listener or observer
 
     def on(self, call):
         self.call = call
@@ -24,7 +24,7 @@ class Event(object):  # event/topic
         return self.call(*args, **kwargs)
 
 
-class Observer(object):
+class Observer(object):  # observable or subject or provider or event source/generator
 
     events = {}
 

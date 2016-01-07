@@ -1,12 +1,19 @@
 from observer import Observer
 
-
+# http://www.dsc.ufcg.edu.br/~jacques/cursos/map/html/arqu/observer.htm
 # https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
 # http://api.jquery.com/trigger/
 # http://stackoverflow.com/questions/12627443/jquery-click-vs-onclick
 # http://stackoverflow.com/questions/9122078/difference-between-onclick-vs-click
 # http://api.jquery.com/trigger/
 # http://api.jquery.com/on/
+# http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
+# http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
+
+
+# TODO: multiplos subscribers por topico
+# TODO: mecanismo para parar a propagacao de uma mensagem em topico
+#    (.stopPropagation or return False)
 
 Provider = Observer
 
@@ -65,12 +72,14 @@ w.subscribe('click3', w.clicked3)
 
 
 # on(topic)
-# gets the topic/event subscriber/handler
+#   gets the topic/event subscriber/handler
 
 # on(topic)(args)
 # // Publish or broadcast events of interest
 #  // with a specific topic name and arguments
 #  // such as the data to pass along
+
+# publishing a message under a given topic
 
 # // Publishers are in charge of publishing topics or notifications of
 # // interest to the application.
