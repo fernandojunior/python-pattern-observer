@@ -117,4 +117,4 @@ w.click_.trigger()
 # w.click(vai=1)
 
 # assert(w.click == w.on('click'))
-assert(w.events['click'].call == w.on('click'))
+# assert(w.events['click'].call == w.on('click'))
