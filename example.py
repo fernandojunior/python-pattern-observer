@@ -4,6 +4,9 @@ from observer import Observer
 # https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
 # http://api.jquery.com/trigger/
 # http://stackoverflow.com/questions/12627443/jquery-click-vs-onclick
+# http://stackoverflow.com/questions/9122078/difference-between-onclick-vs-click
+# http://api.jquery.com/trigger/
+# http://api.jquery.com/on/
 
 Provider = Observer
 
