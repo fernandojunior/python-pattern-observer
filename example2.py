@@ -2,7 +2,7 @@
 Exemplo utilizando o padrao de projeto Templated Method.
 """
 
-from observer import Event, Observer
+from observer import Event, Observable
 
 
 class WindowEvent(Event):
@@ -27,7 +27,7 @@ class Receber(WindowEvent):
         assert(c == 2)
 
 
-class Window(Observer):
+class Window(Observable):
 
     def __init__(self):
         self.listeners()

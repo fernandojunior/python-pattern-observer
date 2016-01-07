@@ -1,4 +1,4 @@
-from observer import Observer
+from observer import Observable
 
 # http://www.dsc.ufcg.edu.br/~jacques/cursos/map/html/arqu/observer.htm
 # https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
@@ -7,6 +7,7 @@ from observer import Observer
 # http://stackoverflow.com/questions/9122078/difference-between-onclick-vs-click
 # http://api.jquery.com/trigger/
 # http://api.jquery.com/on/
+# https://code.jquery.com/jquery-2.1.4.js
 # http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
 # http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
 
@@ -14,14 +15,15 @@ from observer import Observer
 # TODO: multiplos subscribers por topico
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico
 #    (.stopPropagation or return False)
+# TODO encontrar uma forma de eleminar redundancia em Observable#add
+#    self.events[event.name] == event.name + '_'
 
-Provider = Observer
 
+# Event == Topic
+# Observable == Subject == Source == Event Source == Provider
+# Observer == Listener == Subscriber == Handler
 
-# Observable == Subject == Source == Event Source == Publisher
-# Observer == Listener == Subscriber
-
-class Window(Provider):
+class Window(Observable):
     """
     Para a fonte de eventos Window, tem-se 3 eventos (enviar, receber, click).
     Para cada evento, tem-se apenas um observer que realiza apenas uma acao.
@@ -54,11 +56,6 @@ class Window(Provider):
 w = Window()
 
 
-# on(topic, func)
-#    // Subscribe to events of interest
-#     // with a specific topic name and a
-#     // callback function, to be executed
-#     // when the topic/event is observed
 
 # // Subscribers listen for topics they have subscribed to and
 # // invoke a callback function (e.g messageLogger) once a new
@@ -70,22 +67,26 @@ w.on('click', w.clicked)  # on: topic - observer/listener
 w.subscribe('click2', w.clicked2)
 w.subscribe('click3', w.clicked3)
 
+# on(topic, func)
+#    Subscribe to events of interest with a specific topic name and a
+#     callback function (subscriber), to be executed when the topic/event
+#     is observed
 
 # on(topic)
 #   gets the topic/event subscriber/handler
 
-# on(topic)(args)
-# // Publish or broadcast events of interest
-#  // with a specific topic name and arguments
-#  // such as the data to pass along
+# trigger(topic [, args])
+#     Publish or broadcast events of interest
+#     with a specific topic name and arguments
+#     such as the data to pass along
 
-# publishing a message under a given topic
 
 # // Publishers are in charge of publishing topics or notifications of
 # // interest to the application.
 w.on('receber')('a', 'b', 2)  # publication
 w.enviar('1')  # publica mensagem no evento/topico
 w.click(vai=1)  # publicando mensagem/evento click
+# publishing a message under a given topic
 
 print('publishing with trigger ###########################')
 w.receber_.trigger('a', 'b', 2)

@@ -24,14 +24,15 @@ class Event(object):  # event or topic
         return self.call(*args, **kwargs)
 
 
-class Observer(object):  # observable or subject or provider or event source/generator
+class Observable(object):  # observable or subject or provider or event source/generator
 
     events = {}
 
-    def add(self, event):
+    def add(self, event):  # add event listener
         self.events[event.name] = event
-        # metodo generico para acionar um evento
+        # permite acionar um evento diretamente
         setattr(self, event.name, event.call)
+        # permite acessar evento diretamente
         setattr(self, event.name + '_', event)
 
     def on(self, *args):
