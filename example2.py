@@ -20,8 +20,8 @@ class Enviar(WindowEvent):
 
 class Receber(WindowEvent):
 
-    def __call__(self, a, b, c):
-        return a, b, c
+    def __call__(self, *args):
+        return args
 
 
 class Window(Observable):
@@ -35,7 +35,8 @@ class Window(Observable):
 
 w = Window()
 assert(w.enviar.trigger('1') == '1')
-assert(w.receber.trigger('a', 'b', 2) == ('a', 'b', 2))
+assert(w.receber.trigger(w, 'b', 2)[0] is (w, 'b', 2)[0])
+assert(w.receber.trigger(w, 'b', 2)[0] == (w, 'b', 2)[0])
 assert(w.receber2.trigger('a', 'b', 2) == ('a', 'b', 2))
 assert(w.trigger('receber2', 'a', 'b', 2) == ('a', 'b', 2))
 assert(w.receber == w.receber2)
