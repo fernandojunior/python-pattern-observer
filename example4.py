@@ -16,7 +16,7 @@ class MouseEvent(Event):
     def __repr__(self):
         return '{} ({},{})'.format(self.button.__name__, self.x, self.y)
 
-    def call(self, x, y, button):
+    def __call__(self, x, y, button):
         self.x = x
         self.y = y
         self.button = button

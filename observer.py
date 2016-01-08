@@ -17,16 +17,14 @@ class Event(object):
     """Event or topic"""
 
     def __init__(self, call=None):
-        self.call = call or self.call
+        if call:
+            self.on(call)
 
-    def call(self):  # subscriber/listener/observer/reciver handler/callback
-        pass
+    def on(self, call):  # [re]binding a subscriber/listener/observer/reciver
+        self.__call__ = call                               # handler/callback
 
-    def on(self, call):  # [re]binding
-        self.call = call
-
-    def trigger(self, *args, **kwargs):  # notify/emit observer to some action
-        return self.call(*args, **kwargs)
+    def trigger(self, *args, **kwargs):    # notify/emit a msg to observer
+        return self.__call__(*args, **kwargs)     # handler do some action
 
 
 class Observable(object):
