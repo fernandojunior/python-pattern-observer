@@ -21,7 +21,7 @@ class Event(object):
             self.on(call)
 
     def on(self, call):  # [re]binding a subscriber/listener/observer/reciver
-        self.__call__ = call                               # handler/callback
+        self.__call__ = call                            # handler/callback/fn
 
     def trigger(self, *args, **kwargs):    # notify/emit a msg to observer
         return self.__call__(*args, **kwargs)     # handler do some action
@@ -32,8 +32,8 @@ class Observable(object):
 
     events = {}
 
-    def on(self, event, handler):
-        self.events[event] = Event(handler)
+    def on(self, event, call):
+        self.events[event] = call if isinstance(call, Event) else Event(call)
         setattr(self, event, self.events[event])  # self.event.trigger()
 
     def trigger(self, *args, **kargs):

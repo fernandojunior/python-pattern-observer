@@ -14,13 +14,13 @@ class WindowEvent(Event):
 
 class Enviar(WindowEvent):
 
-    def call(self, a):
+    def __call__(self, a):
         return a
 
 
 class Receber(WindowEvent):
 
-    def call(self, a, b, c):
+    def __call__(self, a, b, c):
         return a, b, c
 
 
@@ -28,14 +28,14 @@ class Window(Observable):
 
     def __init__(self):
         self.title = 'Hello World.'
-        self.on(Enviar)
-        self.on(Receber)
-
-    def on(self, event_class):
-        name = event_class.__name__.lower()
-        event = event_class(self)
-        Observable.on(self, name, event.call)
+        self.receber = Receber(self)
+        self.enviar = Enviar(self)
+        self.on('receber2', self.receber)  # criando alias
+        # self.receberAli = self.receber
 
 w = Window()
 assert(w.enviar.trigger('1') == '1')
 assert(w.receber.trigger('a', 'b', 2) == ('a', 'b', 2))
+assert(w.receber2.trigger('a', 'b', 2) == ('a', 'b', 2))
+assert(w.trigger('receber2', 'a', 'b', 2) == ('a', 'b', 2))
+assert(w.receber == w.receber2)
