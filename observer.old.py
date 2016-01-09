@@ -19,7 +19,7 @@ class Observer(object):
 class Observable(object):
 
     def __init__(self):
-        self.events = {}  # dicionario para armazenar eventos
+        self.events = {}  # categoriza observers por evento
 
     def add(self, event, observer):
         """Adiciona um observer a determinado evento."""
@@ -34,28 +34,22 @@ class Observable(object):
         for e in self.events[event]:
             e.update()
 
+if __name__ == '__main__':
+    class Hello(Observer):
 
-class Hello(Observer):
+        def __init__(self, msg):
+            self.msg = msg
 
-    def __init__(self, msg=None):
-        self.msg = msg or 'Ai dentro'
+        def update(self):
+            print(self.msg)
 
-    def update(self):
-        print(self.msg)
-
-# criando dois observers
-hello = Hello()
-hello2 = Hello('Papai noel')
-
-# criando objeto observable
-obj = Observable()
-
-# anexando observers ao evento hello do objeto a ser observado
-obj.add('hello', hello)
-obj.add('hello', hello2)
-
-# notifica todos os observers que estao observando o evento hello
-obj.hello()  # == obj.notify('hello')
-# Result:
-#   Ai dentro
-#   Papai Noel
+    # criando observable
+    obj = Observable()
+    # criando e anexando observers ao evento hello de obj
+    obj.add('hello', Hello('Ai dentro'))
+    obj.add('hello', Hello('Papai noel'))
+    # notificando observers do evento hello
+    obj.hello()  # obj.notify('hello')
+    # Result:
+    #   Ai dentro
+    #   Papai Noel
