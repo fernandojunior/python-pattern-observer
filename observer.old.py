@@ -1,5 +1,7 @@
 """
-Implementacao simples do padrao de projeto observer em Python.
+===============
+Observer (old)
+===============
 
 ::author::
     Fernando Felix do Nascimento Junior
@@ -8,58 +10,52 @@ Implementacao simples do padrao de projeto observer em Python.
 """
 
 
-class Event(object):
-    __name__ = None  # opcional
+class Observer(object):
 
-    def action(self):  # aciona o evento
+    def update(self):  # observer handler
         pass
 
 
-class Observer(object):
+class Observable(object):
 
     def __init__(self):
         self.events = {}  # dicionario para armazenar eventos
 
-    def add(self, event):
-        """Adiciona um evento"""
+    def add(self, event, observer):
+        """Adiciona um observer a determinado evento."""
+        if event not in self.events:
+            self.events[event] = []
+            setattr(self, event, lambda: self.notify(event))  # self.event()
 
-        event_name = event.__name__ or event.__class__.__name__
+        self.events[event].append(observer)
 
-        # se nao existe uma lista de eventos com determinado nome ...
-        if event_name not in self.events:
-            self.events[event_name] = []
-
-        self.events[event_name].append(event)
-
-        if event_name not in dir(self):
-            # cria metodo generico para acionar eventos de um determinado nome
-            setattr(self, event_name, lambda: self.action(event_name))
-
-    def action(self, name):
-        """Metodo que aciona uma lista de eventos (por nome)"""
-        for e in self.events[name]:
-            e.action()
+    def notify(self, event):
+        """Notifica observers por evento."""
+        for e in self.events[event]:
+            e.update()
 
 
-class Hello(Event):
-    __name__ = 'hello'
+class Hello(Observer):
 
     def __init__(self, msg=None):
         self.msg = msg or 'Ai dentro'
 
-    def action(self):
+    def update(self):
         print(self.msg)
 
-# criando dois eventos
+# criando dois observers
 hello = Hello()
 hello2 = Hello('Papai noel')
 
-# criando observer
-obj = Observer()
-obj.add(hello)
-obj.add(hello2)
+# criando objeto observable
+obj = Observable()
 
-# aciona os eventos de nome hello
-obj.hello()  # ou obj.action('hello')
-# Ai dentro
-# Papai Noel
+# anexando observers ao evento hello do objeto a ser observado
+obj.add('hello', hello)
+obj.add('hello', hello2)
+
+# notifica todos os observers que estao observando o evento hello
+obj.hello()  # == obj.notify('hello')
+# Result:
+#   Ai dentro
+#   Papai Noel
