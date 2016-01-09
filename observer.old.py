@@ -10,46 +10,42 @@ Observer (old)
 """
 
 
-class Observer(object):
-
-    def update(self):  # observer handler
-        pass
-
-
 class Observable(object):
 
-    def __init__(self):
-        self.events = {}  # categoriza observers por evento
+    events = {}  # categorizes observers by event
 
-    def add(self, event, observer):
-        """Adiciona um observer a determinado evento."""
+    def add(self, event, observer):  # observer must be a callable object
         if event not in self.events:
             self.events[event] = []
             setattr(self, event, lambda: self.notify(event))  # self.event()
-
         self.events[event].append(observer)
 
-    def notify(self, event):
-        """Notifica observers por evento."""
-        for e in self.events[event]:
-            e.update()
+    def notify(self, event):  # notifies observers by event
+        for observer in self.events[event]:
+            observer(self)  # observer.__call__(self)
 
 if __name__ == '__main__':
-    class Hello(Observer):
+    class HelloObserver:
 
-        def __init__(self, msg):
-            self.msg = msg
+        def __init__(self):
+            self.msg = 'Papai noel'
 
-        def update(self):
-            print(self.msg)
+        def __call__(self, source):  # observer handler
+            print(source.count, self.msg)
+            source.count += 1
 
-    # criando observable
-    obj = Observable()
-    # criando e anexando observers ao evento hello de obj
-    obj.add('hello', Hello('Ai dentro'))
-    obj.add('hello', Hello('Papai noel'))
-    # notificando observers do evento hello
-    obj.hello()  # obj.notify('hello')
+    def another_observer(source):  # funcitons are callable objects
+        print(source.count, "Ai dentro")
+        source.count += 1
+
+    subject = Observable()
+    # Attaching observers to hello event of subject
+    subject.add('hello', HelloObserver())
+    subject.add('hello', another_observer)
+    # changing subject state
+    subject.count = 0
+    # notifing observers
+    subject.hello()  # obj.notify('hello')
     # Result:
-    #   Ai dentro
-    #   Papai Noel
+    #   0 Ai dentro
+    #   1 Papai Noel
