@@ -14,7 +14,7 @@ class Observable(object):
 
     events = {}  # categorizes observers by event
 
-    def add(self, event, observer):  # observer must be a callable object
+    def on(self, event, observer):  # observer must be a callable object
         if event not in self.events:
             self.events[event] = []
             setattr(self, event, lambda: self.notify(event))  # self.event()
@@ -40,8 +40,8 @@ if __name__ == '__main__':
 
     subject = Observable()
     # Attaching observers to hello event of subject
-    subject.add('hello', HelloObserver())
-    subject.add('hello', another_observer)
+    subject.on('hello', HelloObserver())
+    subject.on('hello', another_observer)
     # changing subject state
     subject.count = 0
     # notifing observers
