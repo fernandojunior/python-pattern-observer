@@ -20,6 +20,9 @@ class Observable(object):
             setattr(self, event, lambda: self.notify(event))  # self.event()
         self.events[event].append(observer)
 
+    def off(self, event, observer):
+        self.events[event].remove(observer)
+
     def notify(self, event):  # notifies observers by event
         for observer in self.events[event]:
             observer(self)  # observer.__call__(self)
@@ -38,18 +41,24 @@ if __name__ == '__main__':
 
     subject = Observable()
     subject.count = 0
-    print('Attaching a observer to the event')
+    print('Attach a observer to an event')
     subject.on('hello', Observer())
     subject.count = 1  # changing subject state
     subject.notify('hello')  # notifying observers of hello event
-    print('Attaching another observer...')
+    print('Attach another observer...')
     subject.on('hello', another_observer)
     subject.count = 2
     subject.hello()
+    print('Deattach an observer...')
+    subject.off('hello', another_observer)
+    subject.count = 3
+    subject.hello()
 
     # OUTPUT #
-    # Attaching a observer to hello event
+    # Attach a observer to an event
     # 1 I saw it.
-    # Attaching another observer ...
+    # Attach another observer...
     # 2 I saw it.
     # 2 Me too!
+    # Deattach an observer...
+    # 3 I saw it.
