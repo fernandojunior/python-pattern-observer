@@ -17,13 +17,13 @@ class Observable(object):
     def on(self, event, observer):  # observer must be a callable object
         if event not in self.events:
             self.events[event] = []
-            setattr(self, event, lambda: self.notify(event))  # self.event()
+            setattr(self, event, lambda: self.trigger(event))  # self.event()
         self.events[event].append(observer)
 
     def off(self, event, observer):
         self.events[event].remove(observer)
 
-    def notify(self, event):  # notifies observers by event
+    def trigger(self, event):  # notifies observers by event
         for observer in self.events[event]:
             observer(self)  # observer.__call__(self)
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     print('Attach a observer to an event')
     subject.on('hello', Observer())
     subject.count = 1  # changing subject state
-    subject.notify('hello')  # notifying observers of hello event
+    subject.trigger('hello')  # notifying observers of hello event
     print('Attach another observer...')
     subject.on('hello', another_observer)
     subject.count = 2
