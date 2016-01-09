@@ -11,7 +11,7 @@ from observer import Observable, Event
 # http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
 # http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
 # http://stackoverflow.com/questions/8065305/whats-the-difference-between-on-and-live-or-bind
-
+# http://www.javaworld.com/article/2077444/learn-java/speaking-on-the-observer-pattern.html
 
 # TODO: multiplos subscribers/listeners por topico/evento Observable#add
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico

@@ -1,40 +1,43 @@
 """
-Implementacao do padrao de projeto observer em Python.
+========
+Observer
+========
 
-Nessa versao, o acionamento de um evento Event#trigger permite passagem de
-argumentos e o Observable armazena apenas um observer por evento, o que faz com
-que a classe Observer posssa ser abstraida e seu handler (callback) ser
-utilizado diretamente.
-
-::author::
+:author:
     Fernando Felix do Nascimento Junior
-::license::
+:license:
     MIT License
 """
 
 
 class Event(object):
-    """Event or topic"""
+    """An event that an observer can express interest in."""
 
     def __init__(self, call=None):
         if call:
             self.on(call)
 
-    def on(self, call):  # [re]binding a subscriber/listener/observer/reciver
-        self.__call__ = call                            # handler/callback/fn
+    def on(self, call):
+        """Attach an observer (any Python callable) for this event."""
+        self.__call__ = call
 
-    def trigger(self, *args, **kwargs):    # notify/emit a msg to observer
-        return self.__call__(*args, **kwargs)     # handler do some action
+    def trigger(self, *args, **kwargs):
+        """Execute the observer handler with a message, if any."""
+        return self.__call__(*args, **kwargs)
 
 
 class Observable(object):
-    """Observable or subject or provider or event source/generator"""
+    """A object to be observed. It can be subdivided into many events."""
 
     events = {}
 
-    def on(self, event, call):
+    def on(self, event, call=None):
+        """Add an event or create an event with an observer attached."""
         self.events[event] = call if isinstance(call, Event) else Event(call)
         setattr(self, event, self.events[event])  # self.event.trigger()
 
     def trigger(self, *args, **kargs):
+        """
+        Execute the observer with message for an event of this observable.
+        """
         return self.events[args[0]].trigger(*args[1:], **kargs)
