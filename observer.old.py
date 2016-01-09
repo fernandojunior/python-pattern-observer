@@ -25,27 +25,31 @@ class Observable(object):
             observer(self)  # observer.__call__(self)
 
 if __name__ == '__main__':
-    class HelloObserver:
+    class Observer:
 
         def __init__(self):
-            self.msg = 'Papai noel'
+            self.msg = 'I saw it.'
 
         def __call__(self, source):  # observer handler
             print(source.count, self.msg)
-            source.count += 1
 
     def another_observer(source):  # funcitons are callable objects
-        print(source.count, "Ai dentro")
-        source.count += 1
+        print(source.count, "Me too!")
 
     subject = Observable()
-    # Attaching observers to hello event of subject
-    subject.on('hello', HelloObserver())
-    subject.on('hello', another_observer)
-    # changing subject state
     subject.count = 0
-    # notifing observers
-    subject.hello()  # obj.notify('hello')
-    # Result:
-    #   0 Ai dentro
-    #   1 Papai Noel
+    print('Attaching a observer to the event')
+    subject.on('hello', Observer())
+    subject.count = 1  # changing subject state
+    subject.notify('hello')  # notifying observers of hello event
+    print('Attaching another observer...')
+    subject.on('hello', another_observer)
+    subject.count = 2
+    subject.hello()
+
+    # OUTPUT #
+    # Attaching a observer to hello event
+    # 1 I saw it.
+    # Attaching another observer ...
+    # 2 I saw it.
+    # 2 Me too!
