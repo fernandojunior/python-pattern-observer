@@ -52,15 +52,18 @@ class Observable(object):
             self._events = {}
         return self._events
 
-    def on(self, event, call=None):
-        """Add/Reset an event or create new one with an handler attached."""
-        if isinstance(call, Event):  # add an event or reset it, if exists
-            self.events[event] = call
-        elif event in self.events:  # add new handler to an event
-            self.events[event].on(call)
-        else:  # create new event
-            self.events[event] = Event(call)
-        setattr(self, event, self.events[event])  # self.event.trigger()
+    def on(self, event, handler=None):
+        """Create, add or update an event with an handler or more attached."""
+        if isinstance(handler, list):  # it's a list of handlers
+            for each in handler:
+                self.on(event, each)
+        elif isinstance(handler, Event):  # add or update an event
+            self.events[event] = handler
+            setattr(self, event, self.events[event])  # self.event.trigger()
+        elif event in self.events:  # add an handler to an existing event
+            self.events[event].on(handler)
+        else:  # create new event with a handler attached
+            self.on(event, Event(handler))
 
     def trigger(self, *args, **kargs):
         """

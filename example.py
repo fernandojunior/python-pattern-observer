@@ -12,11 +12,12 @@ from observer import Observable, Event
 # http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
 # http://stackoverflow.com/questions/8065305/whats-the-difference-between-on-and-live-or-bind
 # http://www.javaworld.com/article/2077444/learn-java/speaking-on-the-observer-pattern.html
+# http://c2.com/cgi/wiki?SoftwareDesignPatternsIndex
 
 # TODO: multiplos subscribers/listeners por topico/evento Observable#add
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico
 #    (.stopPropagation or return False)
-# TODO? permitir que um evento faça link de outros eventos e.on(e2).on(e3)
+# TODO? permitir que um evento faca link de outros eventos e.on(e2).on(e3)
 
 
 # Event == Topic
@@ -121,17 +122,21 @@ w.click3.trigger()
 print('end ###########################')
 
 
-# alterando o subscriber/handler do topico/evento clicked
-
 def a(vai=None):
     print('changed', vai)
 
-w.events['click'].on(a)  # rebinding
+w.events['click'].on(a)  # add new handler
 w.events['click'].trigger(8)
 # w.click(vai=1)
 
-# assert(w.click == w.on('click'))
-# assert(w.events['click'].call == w.on('click'))
 
-"""
-"""
+def one(*args):
+    assert(args[0] == 1)
+
+
+def two(*args):
+    assert(args[1] == 2)
+
+w.on('many', [one, two])
+assert(len(w.many.handlers) == 2)
+w.many.trigger(1, 2)
