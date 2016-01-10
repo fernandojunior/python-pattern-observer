@@ -12,7 +12,11 @@ Observer (old)
 
 class Observable(object):
 
-    events = {}  # categorizes observers by event
+    @property
+    def events(self):  # observers are categorized by event
+        if not hasattr(self, '_events'):
+            self._events = {}
+        return self._events
 
     def on(self, event, observer):  # observer must be a callable object
         if event not in self.events:
