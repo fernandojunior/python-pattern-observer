@@ -13,10 +13,13 @@ class LeftButton:
 
 class MouseEvent(Event):
 
+    def __init__(self):
+        self.on(self.handler)
+
     def __repr__(self):
         return '{} ({},{})'.format(self.button.__name__, self.x, self.y)
 
-    def __call__(self, x, y, button):
+    def handler(self, x, y, button):
         self.x = x
         self.y = y
         self.button = button
@@ -32,8 +35,8 @@ class Label(Observable):
     def __repr__(self):
         return self.name
 
-    def clicked(self, e):
-        print('\tLabel \'{}\' clicked'.format(self, e))
+    def clicked(self, e):  # default handler
+        print('\tLabel \'{}\' clicked'.format(self))
 
 
 class Window(Observable):
@@ -61,14 +64,14 @@ class Window(Observable):
 
 class Test(Window):
 
-    def build(self):
+    def build(self):  # template method
         self.on('click', self.clicked)
         self.widget(0, 0, Label('a'))
-        self.widget(0, 4, Label('b')).click.on(self.label_clicked)  # rebinding
+        self.widget(0, 4, Label('b')).click.on(self.label_clicked)  # add other
 
     def label_clicked(self, e):
         label = self.widget(e.x, e.y)
-        print('\t{} clicked. Custom handler'.format(label))
+        print('\tLabel \'{}\' clicked. Custom handler.'.format(label))
 
     def clicked(self, e):
         print('\t{} clicked'.format(self))
@@ -102,5 +105,6 @@ Result:
     Clicking LeftButton at (0,4) of Window:
         Mouse clicked LeftButton (0,4)
         Test Window clicked
-        b clicked. Custom handler
+        Label 'b' clicked. Custom handler.
+        Label 'b' clicked
 """

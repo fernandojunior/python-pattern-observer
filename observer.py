@@ -11,29 +11,55 @@ Observer
 
 
 class Event(object):
-    """An event that an observer can express interest in."""
+    """An event that handlers can express interest in."""
 
-    def __init__(self, call=None):
-        if call:
-            self.on(call)
+    def __init__(self, handler=None):
+        if handler:
+            self.on(handler)
 
-    def on(self, call):
-        """Attach an observer (any Python callable) for this event."""
-        self.__call__ = call
+    def __call__(self, *args, **kwargs):
+        """Execute all event handlers using obj.trigger() or just obj()."""
+        return self.trigger(*args, **kwargs)
+
+    @property
+    def handlers(self):
+        """Return all event handlers."""
+        if not hasattr(self, '_handlers'):  # avoid call __init__ in subclasses
+            self._handlers = set()
+        return self._handlers
+
+    def on(self, handler):
+        """Attach a handler (any Python callable) for the event."""
+        self.handlers.add(handler)
+
+    def off(self, handler):
+        """Deattach a handler for the event."""
+        self.handlers.remove(handler)
 
     def trigger(self, *args, **kwargs):
-        """Execute the observer handler with a message, if any."""
-        return self.__call__(*args, **kwargs)
+        """Execute the handlers with a message, if any."""
+        for h in self.handlers:
+            h(*args, **kwargs)
 
 
 class Observable(object):
     """A object to be observed. It can be subdivided into many events."""
 
-    events = {}
+    @property
+    def events(self):
+        """Return all events of the observable."""
+        if not hasattr(self, '_events'):
+            self._events = {}
+        return self._events
 
     def on(self, event, call=None):
-        """Add an event or create an event with an observer attached."""
-        self.events[event] = call if isinstance(call, Event) else Event(call)
+        """Add/Reset an event or create new one with an handler attached."""
+        if isinstance(call, Event):  # add an event or reset it, if exists
+            self.events[event] = call
+        elif event in self.events:  # add new handler to an event
+            self.events[event].on(call)
+        else:  # create new event
+            self.events[event] = Event(call)
         setattr(self, event, self.events[event])  # self.event.trigger()
 
     def trigger(self, *args, **kargs):

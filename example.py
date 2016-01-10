@@ -16,8 +16,7 @@ from observer import Observable, Event
 # TODO: multiplos subscribers/listeners por topico/evento Observable#add
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico
 #    (.stopPropagation or return False)
-# TODO encontrar uma forma de eleminar redundancia em Observable#add
-#    self.events[event.name] == event.name + '_'
+# TODO? permitir que um evento faça link de outros eventos e.on(e2).on(e3)
 
 
 # Event == Topic
@@ -62,7 +61,8 @@ w.test = Event()
 w.events['test'] = w.test
 w.test.on(w.tested)
 w.test.trigger()
-# TODO: descritor para adicionar a test a w.events automaticamente
+w.test()
+# TODO? descritor para adicionar a test a w.events automaticamente
 
 
 # // Subscribers listen for topics they have subscribed to and
@@ -124,11 +124,14 @@ print('end ###########################')
 # alterando o subscriber/handler do topico/evento clicked
 
 def a(vai=None):
-    print('changed')
+    print('changed', vai)
 
 w.events['click'].on(a)  # rebinding
-w.events['click'].trigger()
+w.events['click'].trigger(8)
 # w.click(vai=1)
 
 # assert(w.click == w.on('click'))
 # assert(w.events['click'].call == w.on('click'))
+
+"""
+"""
