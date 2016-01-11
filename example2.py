@@ -57,6 +57,7 @@ class Window(Observable):
         print('Create alias from receber event and trigger it:')
         self.on('receber2', self.events['receber'])  # receber2 == receber
         self.receber2.trigger('a', 'b', 2)
+        assert(self.events['receber'] == self.events['receber2'])
 
         def receber3(*args):
             print('receber3 was called ', args)

@@ -133,15 +133,18 @@ w.events['click'].trigger(8)
 # w.click(vai=1)
 
 
-def one_handler(i, j, a, b):
-    assert([i, j, a, b] == [1, 2, 3, 4])
+class Handler:
+
+    def __call__(self, i, j, a, b):
+        assert([i, j, a, b] == [1, 2, 3, 4])
 
 
-def two_handler(*args, **kargs):
+def one_handler(*args, **kargs):
     assert(kargs == {'a': 3, 'b': 4})
 
-subject = Observable()
+two_handler = Handler()  # any callable object can be a handler
 
+subject = Observable()
 subject.on('one', one_handler)
 subject.on('two', two_handler)
 subject.on('many', [one_handler, two_handler])
@@ -187,3 +190,5 @@ subject.on('one', ThreeEvent())  # update a subject event with a event object
 
 assert(isinstance(subject.three, ThreeEvent))
 assert(ThreeEvent() != ThreeEvent())
+"""
+"""
