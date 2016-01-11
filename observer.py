@@ -54,17 +54,19 @@ class Observable(object):
 
     def on(self, event, handler=None):
         """Create, add or update an event with an handler or more attached."""
-        if isinstance(event, dict):  # event is a dict of event:handler
-            for key, value in event.items():
-                self.on(key, value)
-        elif isinstance(event, list):  # many events with same handler[s]/event
+        if isinstance(event, str) and ' ' in event:  # event is list str-based
+            self.on(event.split(' '), handler)
+        if isinstance(event, list):  # many events contains same handler
             for each in event:
                 self.on(each, handler)
+        elif isinstance(event, dict):  # event is a dict of <event, handler>
+            for key, value in event.items():
+                self.on(key, value)
         elif isinstance(handler, list):  # handler is a list of handlers
             for each in handler:
                 self.on(event, each)
-        elif isinstance(handler, Event):  # add or update an event
-            self.events[event] = handler
+        elif isinstance(handler, Event):  # handler is Event object
+            self.events[event] = handler  # add or update an event
             setattr(self, event, self.events[event])  # self.event.trigger()
         elif event in self.events:  # add an handler to an existing event
             self.events[event].on(handler)

@@ -79,15 +79,18 @@ document.click()
 document.mouseenter()
 
 document = Observable()
+document.on('click click2', [clicked1, clicked2, clicked3])
+document.on('mouseenter', mouseentered)
+document.click()
+document.mouseenter()
+
+document = Observable()
 document.on({
-    # ['click', 'click2']: [clicked1, clicked2, clicked3],  # can't
-    'click': [clicked1, clicked2, clicked3],
-    'click2': [clicked1, clicked2, clicked3],
+    'click click2': [clicked1, clicked2, clicked3],
     'mouseenter': mouseentered})
 document.click()
 document.mouseenter()
 
-# TODO document.on('click click2', [clicked1, clicked2, clicked3])
 # TODO? document.trigger(['click', 'mouseenter'])
 # TODO? document.trigger('click mouseenter')
 
