@@ -54,7 +54,10 @@ class Observable(object):
 
     def on(self, event, handler=None):
         """Create, add or update an event with an handler or more attached."""
-        if isinstance(handler, list):  # it's a list of handlers
+        if isinstance(event, dict):  # it's a dict of event:handler
+            for key, value in event.items():
+                self.on(key, value)
+        elif isinstance(handler, list):  # it's a list of handlers
             for each in handler:
                 self.on(event, each)
         elif isinstance(handler, Event):  # add or update an event
@@ -64,6 +67,7 @@ class Observable(object):
             self.events[event].on(handler)
         else:  # create new event with a handler attached
             self.on(event, Event(handler))
+        return self
 
     def off(self, event, handler=None):
         """Remove an event or an handler from it."""

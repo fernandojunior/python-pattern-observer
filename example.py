@@ -190,5 +190,9 @@ subject.on('one', ThreeEvent())  # update a subject event with a event object
 
 assert(isinstance(subject.three, ThreeEvent))
 assert(ThreeEvent() != ThreeEvent())
-"""
-"""
+
+
+subject = Observable().on({  # setting an observable with dictionary
+    'one': one_handler,
+    'two': two_handler,
+    'many': [one_handler, two_handler]})
