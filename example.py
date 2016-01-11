@@ -42,14 +42,18 @@ def clicked3():
 def mouseentered():
     print('mouseentered')
 
-document = Observable()
-document.click = Event(clicked1)
-document.click.on(clicked2)
-document.click.on(clicked3)
-document.click.trigger()
 
 document = Observable()
-document.on('click', [clicked1, clicked2, clicked3])
+document.click = Event()
+document.click.on(clicked1)
+document.click.on(clicked2)
+document.click.on(clicked3)
+document.mouseenter = Event(mouseentered)
+document.click.trigger()
+document.mouseenter.trigger()
+
+document = Observable()
+document.on('click', [clicked1, clicked2, clicked3])  # multiple handlers
 document.on('mouseenter', mouseentered)
 document.click()
 document.mouseenter()
@@ -57,10 +61,35 @@ document.mouseenter()
 document = Observable()
 document.on({
     'click': [clicked1, clicked2, clicked3],
-    'mouseenter': mouseentered
-    })
+    'mouseenter': mouseentered})
 document.click()
 document.mouseenter()
+
+document = Observable()
+document.on('click', [clicked1, clicked2, clicked3])
+document.on('click2', [clicked1, clicked2, clicked3])  # contains same handlers
+document.on('mouseenter', mouseentered)
+document.click()
+document.mouseenter()
+
+document = Observable()
+document.on(['click', 'click2'], [clicked1, clicked2, clicked3])
+document.on('mouseenter', mouseentered)
+document.click()
+document.mouseenter()
+
+document = Observable()
+document.on({
+    # ['click', 'click2']: [clicked1, clicked2, clicked3],  # can't
+    'click': [clicked1, clicked2, clicked3],
+    'click2': [clicked1, clicked2, clicked3],
+    'mouseenter': mouseentered})
+document.click()
+document.mouseenter()
+
+# TODO document.on('click click2', [clicked1, clicked2, clicked3])
+# TODO? document.trigger(['click', 'mouseenter'])
+# TODO? document.trigger('click mouseenter')
 
 # TODO? descritor para adicionar a test a w.events automaticamente
 
