@@ -3,11 +3,11 @@ from observer import Observable, Event
 # http://www.dsc.ufcg.edu.br/~jacques/cursos/map/html/arqu/observer.htm
 # https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
 # http://api.jquery.com/trigger/
-# http://stackoverflow.com/questions/12627443/jquery-click-vs-onclick
-# http://stackoverflow.com/questions/9122078/difference-between-onclick-vs-click
 # http://api.jquery.com/trigger/
 # http://api.jquery.com/on/
 # https://code.jquery.com/jquery-2.1.4.js
+# http://stackoverflow.com/questions/12627443/jquery-click-vs-onclick
+# http://stackoverflow.com/questions/9122078/difference-between-onclick-vs-click
 # http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
 # http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
 # http://stackoverflow.com/questions/8065305/whats-the-difference-between-on-and-live-or-bind
@@ -18,6 +18,7 @@ from observer import Observable, Event
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico
 #    (.stopPropagation or return False)
 # TODO? permitir que um evento faca link de outros eventos e.on(e2).on(e3)
+# TODO? permitir event namespaces? http://api.jquery.com/on/#event-names
 
 
 # Event == Topic
@@ -62,9 +63,11 @@ w.test = Event()
 w.events['test'] = w.test
 w.test.on(w.tested)
 w.test.trigger()
-w.test()
+# w.test()
 # TODO? descritor para adicionar a test a w.events automaticamente
 
+w.on('test', w.tested)
+w.test()
 
 # // Subscribers listen for topics they have subscribed to and
 # // invoke a callback function (e.g messageLogger) once a new
@@ -130,13 +133,57 @@ w.events['click'].trigger(8)
 # w.click(vai=1)
 
 
-def one(*args):
-    assert(args[0] == 1)
+def one_handler(i, j, a, b):
+    assert([i, j, a, b] == [1, 2, 3, 4])
 
 
-def two(*args):
-    assert(args[1] == 2)
+def two_handler(*args, **kargs):
+    assert(kargs == {'a': 3, 'b': 4})
 
-w.on('many', [one, two])
-assert(len(w.many.handlers) == 2)
-w.many.trigger(1, 2)
+subject = Observable()
+
+subject.on('one', one_handler)
+subject.on('two', two_handler)
+subject.on('many', [one_handler, two_handler])
+
+subject.events['one'].trigger(1, 2, a=3, b=4)  # trigger event one
+subject.two.trigger(1, 2, a=3, b=4)  # trigger event two
+subject.many(1, 2, a=3, b=4)  # trigger event many
+
+assert(subject.events['one'] == subject.one)
+assert(subject.events['two'] == subject.two)
+assert(subject.events['many'] == subject.many)
+assert(one_handler in subject.one.handlers)
+assert(two_handler in subject.two.handlers)
+assert(one_handler in subject.many.handlers)
+assert(two_handler in subject.many.handlers)
+
+subject.off('many', one_handler)  # remove an handler from the observer events
+
+assert(one_handler not in subject.many.handlers)
+assert(two_handler in subject.many.handlers)
+
+subject.off('many')  # remove 'many' event
+
+assert('many' not in subject.events)
+try:
+    subject.many
+    assert(False)
+except:
+    assert(True)
+
+subject.on('two2', subject.two)  # creating alias for 'two' event
+assert(subject.two2 == subject.two)
+
+
+class ThreeEvent(Event):
+
+    def __init__(self):
+        self.on(one_handler)  # add a handler
+        self.on(two_handler)  # add another
+
+subject.on('three', ThreeEvent())  # add a subject event with a event object
+subject.on('one', ThreeEvent())  # update a subject event with a event object
+
+assert(isinstance(subject.three, ThreeEvent))
+assert(ThreeEvent() != ThreeEvent())
