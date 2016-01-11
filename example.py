@@ -62,34 +62,31 @@ document = Observable()
 document.on({
     'click': [clicked1, clicked2, clicked3],
     'mouseenter': mouseentered})
-document.click()
-document.mouseenter()
+document.trigger(['click', 'mouseenter'])
 
 document = Observable()
 document.on('click', [clicked1, clicked2, clicked3])
 document.on('click2', [clicked1, clicked2, clicked3])  # contains same handlers
 document.on('mouseenter', mouseentered)
-document.click()
-document.mouseenter()
+document.trigger(['click', 'mouseenter'])
 
 document = Observable()
 document.on(['click', 'click2'], [clicked1, clicked2, clicked3])
 document.on('mouseenter', mouseentered)
-document.click()
-document.mouseenter()
+document.trigger(['click', 'mouseenter'])
 
 document = Observable()
 document.on('click click2', [clicked1, clicked2, clicked3])
 document.on('mouseenter', mouseentered)
-document.click()
-document.mouseenter()
+document.trigger(['click', 'mouseenter'])
 
 document = Observable()
 document.on({
     'click click2': [clicked1, clicked2, clicked3],
     'mouseenter': mouseentered})
-document.click()
-document.mouseenter()
+document.trigger(['click', 'mouseenter'])
+# document.click()
+# document.mouseenter()
 
 # TODO? document.trigger(['click', 'mouseenter'])
 # TODO? document.trigger('click mouseenter')

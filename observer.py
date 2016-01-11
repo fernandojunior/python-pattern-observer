@@ -85,4 +85,9 @@ class Observable(object):
         """
         Execute all event handlers with optional arguments for the observable.
         """
-        return self.events[args[0]].trigger(*args[1:], **kargs)
+        event = args[0]
+        if isinstance(event, list):  # event is a list of event
+            for each in event:
+                self.events[each].trigger(*args[1:], **kargs)
+        else:
+            self.events[args[0]].trigger(*args[1:], **kargs)
