@@ -147,7 +147,7 @@ two_handler = Handler()  # any callable object can be a handler
 subject = Observable()
 subject.on('one', one_handler)
 subject.on('two', two_handler)
-subject.on('many', [one_handler, two_handler])
+subject.on('many', [one_handler, two_handler])  # event with many handlers
 
 subject.events['one'].trigger(1, 2, a=3, b=4)  # trigger event one
 subject.two.trigger(1, 2, a=3, b=4)  # trigger event two
@@ -186,14 +186,37 @@ class ThreeEvent(Event):
         self.on(two_handler)  # add another
 
 subject.on('three', ThreeEvent())  # add a subject event with a event object
-subject.on('one', ThreeEvent())  # update a subject event with a event object
-
 assert(isinstance(subject.three, ThreeEvent))
+assert(one_handler in subject.three.handlers)
+assert(two_handler in subject.three.handlers)
+
+subject.on('one', ThreeEvent())  # update a existing event with a event object
+
 assert(ThreeEvent() != ThreeEvent())
 
-
-subject = Observable().on({  # setting events of an observable with dictionary
+subject = Observable()
+subject.on({  # setting events of an observable with dictionary
     'one': one_handler,
     'two': two_handler,
     'three': ThreeEvent(),
     'many': [one_handler, two_handler]})
+
+subject = Observable()
+subject.on(['two', 'two2'], two_handler)  # events with same handler
+assert(subject.two is not subject.two2)
+assert(two_handler in subject.two.handlers)
+assert(two_handler in subject.two2.handlers)
+
+subject = Observable()
+subject.on(['many', 'many2'], [one_handler, two_handler])  # same handlers
+assert(subject.many is not subject.many2)
+assert(one_handler in subject.many.handlers)
+assert(two_handler in subject.many.handlers)
+assert(one_handler in subject.many2.handlers)
+assert(two_handler in subject.many2.handlers)
+
+subject = Observable()
+three_event = ThreeEvent()
+subject.on(['three', 'three_alias'], three_event)  # same reference
+assert(three_event is subject.three)
+assert(subject.three is subject.three_alias)
