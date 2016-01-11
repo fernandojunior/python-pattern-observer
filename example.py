@@ -85,10 +85,7 @@ document.on({
     'click click2': [clicked1, clicked2, clicked3],
     'mouseenter': mouseentered})
 document.trigger(['click', 'mouseenter'])
-# document.click()
-# document.mouseenter()
 
-# TODO? document.trigger(['click', 'mouseenter'])
 # TODO? document.trigger('click mouseenter')
 
 # TODO? descritor para adicionar a test a w.events automaticamente
