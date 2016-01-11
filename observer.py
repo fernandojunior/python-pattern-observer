@@ -81,6 +81,6 @@ class Observable(object):
 
     def trigger(self, *args, **kargs):
         """
-        Execute the observer with message for an event of this observable.
+        Execute all event handlers with optional arguments for the observable.
         """
         return self.events[args[0]].trigger(*args[1:], **kargs)

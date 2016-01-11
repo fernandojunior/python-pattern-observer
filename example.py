@@ -19,118 +19,50 @@ from observer import Observable, Event
 #    (.stopPropagation or return False)
 # TODO? permitir que um evento faca link de outros eventos e.on(e2).on(e3)
 # TODO? permitir event namespaces? http://api.jquery.com/on/#event-names
+# TODO? subject.trigger(event)
 
 
 # Event == Topic
 # Observable == Subject == Source == Event Source == Provider
 # Observer == Listener == Subscriber
 
-class Window(Observable):
-    """
-    Para a fonte de eventos Window, tem-se 3 eventos (enviar, receber, click).
-    Para cada evento, tem-se apenas um observer que realiza apenas uma acao.
-    """
 
-    def subscribe(self, event, subscriber):
-        self.on(event, subscriber)
-
-    def publish(self, *args, **kargs):
-        return self.trigger(*args, **kargs)
-
-    def tested(self):
-        print('tested')
-
-    def buttonenviar(self, a):
-        assert(a == '1')
-
-    def buttonreceber(self, a, b, c):
-        assert(a == 'a')
-        assert(b == 'b')
-        assert(c == 2)
-
-    def clicked(self, vai=None):
-        print(vai, 'clicked')  # subscriber recebe mensagem (arga)
-
-    def clicked2(self, a, vai=None):
-        print(a, vai, 'clicked')  # subscriber recebe mensagem (arga)
-
-    def clicked3(self):
-        print('cc')
+def clicked1():
+    print('clicked1.')
 
 
-w = Window()
-w.test = Event()
-w.events['test'] = w.test
-w.test.on(w.tested)
-w.test.trigger()
-# w.test()
+def clicked2():
+    print('clicked2.')
+
+
+def clicked3():
+    print('clicked3.')
+
+
+def mouseentered():
+    print('mouseentered')
+
+document = Observable()
+document.click = Event(clicked1)
+document.click.on(clicked2)
+document.click.on(clicked3)
+document.click.trigger()
+
+document = Observable()
+document.on('click', [clicked1, clicked2, clicked3])
+document.on('mouseenter', mouseentered)
+document.click()
+document.mouseenter()
+
+document = Observable()
+document.on({
+    'click': [clicked1, clicked2, clicked3],
+    'mouseenter': mouseentered
+    })
+document.click()
+document.mouseenter()
+
 # TODO? descritor para adicionar a test a w.events automaticamente
-
-w.on('test', w.tested)
-w.test()
-
-# // Subscribers listen for topics they have subscribed to and
-# // invoke a callback function (e.g messageLogger) once a new
-# // notification is broadcast on that topic
-
-w.on('enviar', w.buttonenviar)  # subscription
-w.on('receber', w.buttonreceber)
-w.on('click', w.clicked)  # on: topic - observer/listener
-w.subscribe('click2', w.clicked2)
-w.subscribe('click3', w.clicked3)
-# TODO w.on(['enviar1', 'enviar2'], w.buttonenviar)
-# TODO w.on([enviar1, enviar2], w.buttonenviar)
-
-# on(topic, func)
-#    Subscribe to events of interest with a specific topic name and a
-#     callback function (subscriber), to be executed when the topic/event
-#     is observed
-
-# on(topic)
-#   gets the topic/event subscriber/handler
-
-# trigger(topic [, args])
-#     Publish or broadcast events of interest
-#     with a specific topic name and arguments
-#     such as the data to pass along
-
-
-# // Publishers are in charge of publishing topics or notifications of
-# // interest to the application.
-# publication
-w.enviar.trigger('1')  # publica mensagem no evento/topico
-w.click.trigger(vai=1)  # publicando mensagem/evento click
-# publishing a message under a given topic
-
-print('publishing with trigger ###########################')
-w.events['receber'].trigger('a', 'b', 2)
-w.trigger('receber', 'a', 'b', 2)
-w.publish('receber', 'a', 'b', 2)
-w.receber.trigger('a', 'b', 2)
-
-w.events['click'].trigger(vai=1)
-w.trigger('click', vai=1)  # publicando mensagem/evento click
-w.publish('click', vai=1)  # publicando mensagem/evento click
-w.click.trigger(vai=1)
-
-w.events['click2'].trigger(2, vai=3)
-w.trigger('click2', 2, vai=3)
-w.publish('click2', 2, vai=3)
-w.click2.trigger(2, vai=3)
-
-w.events['click3'].trigger()
-w.trigger('click3')
-w.publish('click3')
-w.click3.trigger()
-print('end ###########################')
-
-
-def a(vai=None):
-    print('changed', vai)
-
-w.events['click'].on(a)  # add new handler
-w.events['click'].trigger(8)
-# w.click(vai=1)
 
 
 class Handler:
@@ -143,31 +75,34 @@ def one_handler(*args, **kargs):
     assert(kargs == {'a': 3, 'b': 4})
 
 two_handler = Handler()  # any callable object can be a handler
+three_handler = Handler()
 
 subject = Observable()
 subject.on('one', one_handler)
 subject.on('two', two_handler)
-subject.on('many', [one_handler, two_handler])  # event with many handlers
-
-subject.events['one'].trigger(1, 2, a=3, b=4)  # trigger event one
-subject.two.trigger(1, 2, a=3, b=4)  # trigger event two
-subject.many(1, 2, a=3, b=4)  # trigger event many
-
-assert(subject.events['one'] == subject.one)
-assert(subject.events['two'] == subject.two)
-assert(subject.events['many'] == subject.many)
+subject.on('three', three_handler)
+subject.on('many', [one_handler, two_handler])  # event with handlers
+subject.many.on(three_handler)  # add another handler
+assert(subject.events['one'] is subject.one)
+assert(subject.events['two'] is subject.two)
+assert(subject.events['three'] is subject.three)
+assert(subject.events['many'] is subject.many)
 assert(one_handler in subject.one.handlers)
 assert(two_handler in subject.two.handlers)
 assert(one_handler in subject.many.handlers)
 assert(two_handler in subject.many.handlers)
+assert(three_handler in subject.many.handlers)
 
-subject.off('many', one_handler)  # remove an handler from the observer events
+subject.events['one'].trigger(1, 2, a=3, b=4)  # trigger an event with message
+subject.two.trigger(1, 2, a=3, b=4)  # trigger ...
+subject.many(1, 2, a=3, b=4)  # trigger ...
 
+subject.off('many', one_handler)  # remove an handler from subject event
+subject.many.off(two_handler)  # remove ...
 assert(one_handler not in subject.many.handlers)
-assert(two_handler in subject.many.handlers)
+assert(two_handler not in subject.many.handlers)
 
-subject.off('many')  # remove 'many' event
-
+subject.off('many')  # remove an event from subject
 assert('many' not in subject.events)
 try:
     subject.many
@@ -175,7 +110,7 @@ try:
 except:
     assert(True)
 
-subject.on('two2', subject.two)  # creating alias for 'two' event
+subject.on('two2', subject.two)  # creating alias for the event
 assert(subject.two2 == subject.two)
 
 
@@ -191,7 +126,6 @@ assert(one_handler in subject.three.handlers)
 assert(two_handler in subject.three.handlers)
 
 subject.on('one', ThreeEvent())  # update a existing event with a event object
-
 assert(ThreeEvent() != ThreeEvent())
 
 subject = Observable()
@@ -208,7 +142,7 @@ assert(two_handler in subject.two.handlers)
 assert(two_handler in subject.two2.handlers)
 
 subject = Observable()
-subject.on(['many', 'many2'], [one_handler, two_handler])  # same handlers
+subject.on(['many', 'many2'], [one_handler, two_handler])  # with same handlers
 assert(subject.many is not subject.many2)
 assert(one_handler in subject.many.handlers)
 assert(two_handler in subject.many.handlers)
@@ -217,6 +151,6 @@ assert(two_handler in subject.many2.handlers)
 
 subject = Observable()
 three_event = ThreeEvent()
-subject.on(['three', 'three_alias'], three_event)  # same reference
+subject.on(['three', 'three_alias'], three_event)  # events with same reference
 assert(three_event is subject.three)
 assert(subject.three is subject.three_alias)
