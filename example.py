@@ -192,7 +192,8 @@ assert(isinstance(subject.three, ThreeEvent))
 assert(ThreeEvent() != ThreeEvent())
 
 
-subject = Observable().on({  # setting an observable with dictionary
+subject = Observable().on({  # setting events of an observable with dictionary
     'one': one_handler,
     'two': two_handler,
+    'three': ThreeEvent(),
     'many': [one_handler, two_handler]})
