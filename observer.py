@@ -65,6 +65,14 @@ class Observable(object):
         else:  # create new event with a handler attached
             self.on(event, Event(handler))
 
+    def off(self, event, handler=None):
+        """Remove an event or an handler from it."""
+        if handler:
+            self.events[event].off(handler)
+        else:
+            del self.events[event]
+            delattr(self, event)
+
     def trigger(self, *args, **kargs):
         """
         Execute the observer with message for an event of this observable.
