@@ -1,4 +1,4 @@
-# Example based on:
+# Example based in:
 # http://stackoverflow.com/questions/20473563/python-qt4-passing-arguments-in-qtcore-qobject-connect
 from observer import Observable, Event
 

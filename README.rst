@@ -58,6 +58,8 @@ An event with a handler attached:
     document.click.on(clicked)  # atach a handler to the event
     document.click.trigger(1, 2, c=3)  # notify the handler ...
 
+    document.off('click')  # remove an event
+
     # Output:
     # clicked  1 2 3
 
@@ -93,6 +95,8 @@ An event with many handlers attached:
     document = Observable()
     document.on('click', [clicked1, clicked2, clicked3])
     document.trigger('click')
+
+    document.off('click', clicked1)  # remove a handler from the event
 
     # Output:
     # clicked3.
@@ -186,6 +190,9 @@ Add many events with a dictionary:
     document.clickb.trigger()
     document.trigger(['click1', 'click2', 'click3'])
 
+    # Output:
+    # ...
+
 Synonyms
 ------------
 
@@ -217,3 +224,13 @@ References
 .. [#] https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
 .. [#] http://api.jquery.com/trigger/
 .. [#] http://api.jquery.com/on/
+
+Links
+-----
+
+- http://c2.com/cgi/wiki?SoftwareDesignPatternsIndex
+- https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
+- http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
+- http://stackoverflow.com/questions/8065305/whats-the-difference-between-on-and-live-or-bind
+- http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
+- http://www.javaworld.com/article/2077444/learn-java/speaking-on-the-observer-pattern.html

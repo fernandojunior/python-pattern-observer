@@ -1,23 +1,5 @@
+# Examples just for test
 from observer import Observable, Event
-
-# http://www.dsc.ufcg.edu.br/~jacques/cursos/map/html/arqu/observer.htm
-# https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
-# http://stackoverflow.com/questions/12627443/jquery-click-vs-onclick
-# http://stackoverflow.com/questions/9122078/difference-between-onclick-vs-click
-# http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
-# http://stackoverflow.com/questions/11857325/publisher-subscriber-vs-observer
-# http://stackoverflow.com/questions/8065305/whats-the-difference-between-on-and-live-or-bind
-# http://www.javaworld.com/article/2077444/learn-java/speaking-on-the-observer-pattern.html
-# http://c2.com/cgi/wiki?SoftwareDesignPatternsIndex
-
-# TODO: multiplos subscribers/listeners por topico/evento Observable#add
-# TODO: mecanismo para parar a propagacao de uma mensagem em topico
-#    (.stopPropagation or return False)
-# TODO? permitir que um evento faca link de outros eventos e.on(e2).on(e3)
-# TODO? permitir event namespaces? http://api.jquery.com/on/#event-names
-# TODO? subject.trigger(event)
-# TODO? document.trigger('click mouseenter')
-# TODO? descritor para adicionar a event a w.events automaticamente
 
 
 class Handler:
@@ -109,3 +91,12 @@ three_event = ThreeEvent()
 subject.on(['three', 'three_alias'], three_event)  # events with same reference
 assert(three_event is subject.three)
 assert(subject.three is subject.three_alias)
+
+
+# TODO: mecanismo para parar a propagacao de uma mensagem em topico
+#    (.stopPropagation or return False)
+# TODO? permitir que um evento faca link de outros eventos e.on(e2).on(e3)
+# TODO? permitir event namespaces? http://api.jquery.com/on/#event-names
+# TODO? subject.trigger(event)
+# TODO? document.trigger('click mouseenter')
+# TODO? descritor para adicionar a event a w.events automaticamente
