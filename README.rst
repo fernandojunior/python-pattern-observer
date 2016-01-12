@@ -16,13 +16,24 @@ Therefore, a subject can be subdivided into topics and observers can express
 interest in one (or more) topic and only receive notifications (with any
 message or not) from that.
 
-The implementation is also based on the jquery publish–subscribe model [#]_ [#]_. So, for
-convenience, observers will be called **handlers** and topics will be called
-**events**. The observer module has only two members: Event and Observable. An
-**Observable** instance allows you connect different handlers to its events.
-A handler can be any function, method or callable object.
+The implementation is also based on the jquery publish–subscribe model [#]_
+[#]_. So, for convenience, observers will be called **handlers** and topics
+will be called **events**. The observer module has only two members: Event and
+Observable. An **Observable** instance allows you connect different handlers to
+its events. A handler can be any function, method or callable object.
 
 A simpler implementation of the pattern can be found at **observer.old.py**.
+
+Version
+-------
+
+Switch the branch menu to get the current version.
+
+Installation
+-------------
+
+Download the source **observer.py** and put it in the root directory of your
+project.
 
 Examples
 --------
@@ -30,6 +41,8 @@ Examples
 An event with a handler attached:
 
 .. code:: python
+
+    from observer import Event, Observable
 
     def clicked(a, b, c=None):
         print('clicked ', a, b, c)
@@ -186,10 +199,16 @@ Author
 
 Fernando Felix do Nascimento Junior.
 
+
+Keywords
+--------
+
+python, design pattern, observer, publish–subscribe, jquery
+
 License
 -------
 
-MIT License.
+Released under MIT License.
 
 References
 ----------
