@@ -53,7 +53,7 @@ class Observable(object):
         return self._events
 
     def on(self, event, handler=None):
-        """Create, add or update an event with an handler or more attached."""
+        """Create, add or update an event with a handler or more attached."""
         if isinstance(event, str) and ' ' in event:  # event is list str-based
             self.on(event.split(' '), handler)
         if isinstance(event, list):  # many events contains same handler
@@ -68,13 +68,13 @@ class Observable(object):
         elif isinstance(handler, Event):  # handler is Event object
             self.events[event] = handler  # add or update an event
             setattr(self, event, self.events[event])  # self.event.trigger()
-        elif event in self.events:  # add an handler to an existing event
+        elif event in self.events:  # add a handler to an existing event
             self.events[event].on(handler)
         else:  # create new event with a handler attached
             self.on(event, Event(handler))
 
     def off(self, event, handler=None):
-        """Remove an event or an handler from it."""
+        """Remove an event or a handler from it."""
         if handler:
             self.events[event].off(handler)
         else:

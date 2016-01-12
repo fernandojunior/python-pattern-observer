@@ -123,13 +123,14 @@ class ClickEvent(Event):
     def clicked3(self):
         print('clicked3.')
 
+print('Add an event with predefined event object that contains many handlers attached:')
 click_event = ClickEvent()
 click_event2 = ClickEvent()
-
 document = Observable()
 document.on('click', click_event)  # create document event with event instance
 document.on('click', click_event2)  # replace document event behaviour
 document.on('click click_alias', click_event)  # events have the same reference
+document.trigger(['click', 'click_alias'])
 
 print('Create many document events with a dictionary:')
 document = Observable()
@@ -139,10 +140,10 @@ document.on({
     'click1': clicked1,
     'click2': clicked2,
     'click3': clicked3})
-document.click.trigger()
-document.clicka()
-document.trigger('click1')
-document.trigger(['click2', 'click3'])
+document.click()
+document.clicka.trigger()
+document.clickb.trigger()
+document.trigger(['click1', 'click2', 'click3'])
 
 # TODO? document.trigger('click mouseenter')
 # TODO? descritor para adicionar a test a w.events automaticamente

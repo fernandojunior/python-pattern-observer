@@ -34,17 +34,19 @@ An event with a handler attached:
     def clicked(a, b, c=None):
         print('clicked ', a, b, c)
 
-    print('A document event (click) with a handler:')
     document = Observable()
-    document.on('click', clicked)  # create event dynamically
-    document.click(1, 2, c=3)
+    document.on('click', clicked)  # create event dynamically with a handler attached
+    document.click(1, 2, c=3)  # notify event handler with arguments
 
     # Verbose version:
     document = Observable()
-    document.click = Event()
-    document.events['click'] = document.click
-    document.click.on(clicked)  # add a handler to the event
-    document.click.trigger(1, 2, c=3)  # trigger event handler with arguments
+    document.click = Event()  # create event
+    document.events['click'] = document.click  # add it to the dict of events
+    document.click.on(clicked)  # atach a handler to the event
+    document.click.trigger(1, 2, c=3)  # notify the handler ...
+
+    # Output:
+    # clicked  1 2 3
 
 An event with many handlers attached:
 
@@ -79,6 +81,11 @@ An event with many handlers attached:
     document.on('click', [clicked1, clicked2, clicked3])
     document.trigger('click')
 
+    # Output:
+    # clicked3.
+    # clicked2.
+    # clicked1.
+
 Two events that contains the same handlers attached:
 
 .. code:: python
@@ -87,14 +94,23 @@ Two events that contains the same handlers attached:
     document.on('clicka', [clicked1, clicked2, clicked3])
     document.on('clickb', [clicked1, clicked2, clicked3])
 
-    # simpler:
+    # Simpler:
     document.on(['clicka', 'clickb'], [clicked1, clicked2, clicked3])
 
-    # more simpler:
+    # More simpler:
     document.on('clicka clickb', [clicked1, clicked2, clicked3])
 
-    # trigger two events at once:
+    # Trigger two events at once:
     document.trigger(['clicka', 'clickb'])
+
+    # Output:
+    # clicked1.
+    # clicked3.
+    # clicked2.
+    # clicked1.
+    # clicked3.
+    # clicked2.
+
 
 Add an event with predefined event object that contains many handlers attached:
 
@@ -119,14 +135,25 @@ Add an event with predefined event object that contains many handlers attached:
     click_event = ClickEvent()  # predefined event object
 
     document = Observable()
-    document.on('click', click_event)  # add...
+    document.on('click', click_event)  # add new entry with predefined obj ...
 
-    # Replace document event behaviour:
+    # Replace event behaviour:
     click_event2 = ClickEvent()  # new event object
-    document.on('click', click_event2)  # update ...
+    document.on('click', click_event2)  # update the entry with new obj ...
+
+    # Trigger
+    document.trigger(['click', 'click_alias'])
 
     # Two events with same event object reference:
     document.on('click click_alias', click_event)
+
+    # Output:
+    # clicked1.
+    # clicked2.
+    # clicked3.
+    # clicked1.
+    # clicked2.
+    # clicked3.
 
 Add many events with a dictionary:
 
