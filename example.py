@@ -97,7 +97,7 @@ assert(two_handler in subject.two.handlers)
 assert(two_handler in subject.two2.handlers)
 
 subject = Observable()
-subject.on(['many', 'many2'], [one_handler, two_handler])  # with same handlers
+subject.on('many many2', [one_handler, two_handler])  # with same handlers
 assert(subject.many is not subject.many2)
 assert(one_handler in subject.many.handlers)
 assert(two_handler in subject.many.handlers)

@@ -58,7 +58,7 @@ class Observable(object):
         """Create, add or update an event with a handler or more attached."""
         if isinstance(event, str) and ' ' in event:  # event is list str-based
             self.on(event.split(' '), handler)
-        if isinstance(event, list):  # many events contains same handler
+        elif isinstance(event, list):  # many events contains same handler
             for each in event:
                 self.on(each, handler)
         elif isinstance(event, dict):  # event is a dict of <event, handler>
