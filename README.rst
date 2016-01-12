@@ -16,7 +16,7 @@ Therefore, a subject can be subdivided into topics and observers can express
 interest in one (or more) topic and only receive notifications (with any
 message or not) from that.
 
-The implementation is also based on the jquery publish–subscribe model. So, for
+The implementation is also based on the jquery publish–subscribe model [#]_ [#]_. So, for
 convenience, observers will be called **handlers** and topics will be called
 **events**. The observer module has only two members: Event and Observable. An
 **Observable** instance allows you connect different handlers to its events.
@@ -141,11 +141,11 @@ Add an event with predefined event object that contains many handlers attached:
     click_event2 = ClickEvent()  # new event object
     document.on('click', click_event2)  # update the entry with new obj ...
 
+    # Two events can point same event object reference:
+    document.on('click click_alias', click_event)
+
     # Trigger
     document.trigger(['click', 'click_alias'])
-
-    # Two events with same event object reference:
-    document.on('click click_alias', click_event)
 
     # Output:
     # clicked1.
@@ -196,3 +196,5 @@ References
 
 .. [#] https://en.wikipedia.org/wiki/Observer_pattern
 .. [#] https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
+.. [#] http://api.jquery.com/trigger/
+.. [#] http://api.jquery.com/on/

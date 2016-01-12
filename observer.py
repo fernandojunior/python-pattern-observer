@@ -3,6 +3,8 @@
 Observer
 ========
 
+A observer pattern implementation in Python.
+
 :author:
     Fernando Felix do Nascimento Junior
 :license:
