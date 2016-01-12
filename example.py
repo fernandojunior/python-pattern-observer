@@ -61,6 +61,23 @@ document = Observable()
 document.on('click', [clicked1, clicked2, clicked3])  # create it dynamically
 document.click.trigger()
 
+
+class Clicked:
+
+    def __init__(self, i):
+        self.msg = 'Clicked{}.'.format(i)
+
+    def __call__(self):
+        print(self.msg)
+
+print('A document event (click) with many handlers:')
+clicked1 = Clicked(1)
+clicked2 = Clicked(2)
+clicked3 = Clicked(3)
+document = Observable()
+document.on('click', [clicked1, clicked2, clicked3])
+document.trigger('click')
+
 print('Three document events each one with its handler:')
 document = Observable()
 document.on({
@@ -126,23 +143,6 @@ document.click.trigger()
 document.clicka()
 document.trigger('click1')
 document.trigger(['click2', 'click3'])
-
-
-class Clicked:
-
-    def __init__(self, i):
-        self.msg = 'Clicked{}.'.format(i)
-
-    def __call__(self):
-        print(self.msg)
-
-clicked1 = Clicked(1)
-clicked2 = Clicked(2)
-clicked3 = Clicked(3)
-document = Observable()
-document.on('click', [clicked1, clicked2, clicked3])
-document.trigger('click')
-
 
 # TODO? document.trigger('click mouseenter')
 # TODO? descritor para adicionar a test a w.events automaticamente
