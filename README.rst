@@ -28,6 +28,7 @@ Examples
 --------
 
 An event with a handler attached:
+
 .. code:: python
 
     def clicked(a, b, c=None):
@@ -46,6 +47,7 @@ An event with a handler attached:
     document.click.trigger(1, 2, c=3)  # trigger event handler with arguments
 
 An event with many handlers attached:
+
 .. code:: python
 
     def clicked1():
@@ -67,7 +69,7 @@ An event with many handlers attached:
         def __init__(self, i):
             self.msg = 'clicked{}.'.format(i)
 
-        def __call__(self):
+        def __call__(self):  # make it callable
             print(self.msg)
 
     clicked1 = Clicked(1)
@@ -78,6 +80,7 @@ An event with many handlers attached:
     document.trigger('click')
 
 Two events that contains the same handlers attached:
+
 .. code:: python
 
     document = Observable()
@@ -94,7 +97,9 @@ Two events that contains the same handlers attached:
     document.trigger(['clicka', 'clickb'])
 
 Add an event with predefined event object that contains many handlers attached:
+
 .. code:: python
+
     class ClickEvent(Event):
 
         def __init__(self):
@@ -124,7 +129,9 @@ Add an event with predefined event object that contains many handlers attached:
     document.on('click click_alias', click_event)
 
 Add many events with a dictionary:
+
 .. code:: python
+
     document = Observable()
     document.on({
         'click click_alias': click_event,
