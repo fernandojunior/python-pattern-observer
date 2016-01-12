@@ -2,10 +2,6 @@ from observer import Observable, Event
 
 # http://www.dsc.ufcg.edu.br/~jacques/cursos/map/html/arqu/observer.htm
 # https://www.safaribooksonline.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
-# http://api.jquery.com/trigger/
-# http://api.jquery.com/trigger/
-# http://api.jquery.com/on/
-# https://code.jquery.com/jquery-2.1.4.js
 # http://stackoverflow.com/questions/12627443/jquery-click-vs-onclick
 # http://stackoverflow.com/questions/9122078/difference-between-onclick-vs-click
 # http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding
@@ -20,133 +16,8 @@ from observer import Observable, Event
 # TODO? permitir que um evento faca link de outros eventos e.on(e2).on(e3)
 # TODO? permitir event namespaces? http://api.jquery.com/on/#event-names
 # TODO? subject.trigger(event)
-
-
-def clicked(a, b, c=None):
-    print('clicked ', a, b, c)
-
-
-def clicked1():
-    print('clicked1.')
-
-
-def clicked2():
-    print('clicked2.')
-
-
-def clicked3():
-    print('clicked3.')
-
-print('A document event (click) with a handler:')
-document = Observable()
-document.click = Event()
-document.click.on(clicked)  # add a handler to the event
-document.click.trigger(1, 2, c=3)  # trigger event handler with arguments
-
-print('A document event (click) with a handler:')
-document = Observable()
-document.on('click', clicked)  # create event dynamically
-document.click.trigger(1, 2, c=3)
-
-print('A document event (click) with many handlers:')
-document = Observable()
-document.click = Event()
-document.click.on(clicked1)  # add a handler to the event
-document.click.on(clicked2)  # add another
-document.click.on(clicked3)  # ...
-document.click.trigger()  # trigger all event handlers
-
-print('A document event (click) with many handlers:')
-document = Observable()
-document.on('click', [clicked1, clicked2, clicked3])  # create it dynamically
-document.click.trigger()
-
-
-class Clicked:
-
-    def __init__(self, i):
-        self.msg = 'Clicked{}.'.format(i)
-
-    def __call__(self):
-        print(self.msg)
-
-print('A document event (click) with many handlers:')
-clicked1 = Clicked(1)
-clicked2 = Clicked(2)
-clicked3 = Clicked(3)
-document = Observable()
-document.on('click', [clicked1, clicked2, clicked3])
-document.trigger('click')
-
-print('Three document events each one with its handler:')
-document = Observable()
-document.on({
-    'click1': clicked1,
-    'click2': clicked2,
-    'click3': clicked3})
-document.click1.trigger()  # different ways to trigger an event
-document.click2()
-document.trigger('click3')
-print('Trigger many events at once:')
-document.trigger(['click1', 'click2', 'click3'])  # trigger many events at once
-
-print('Two document events that contains the same handlers:')
-document = Observable()
-document.on('clicka', [clicked1, clicked2, clicked3])
-document.on('clickb', [clicked1, clicked2, clicked3])
-document.trigger(['clicka', 'clickb'])
-
-print('Two document events that contains the same handlers:')
-document = Observable()
-document.on(['clicka', 'clickb'], [clicked1, clicked2, clicked3])
-document.trigger(['clicka', 'clickb'])
-
-print('Two document events that contains the same handlers:')
-document = Observable()
-document.on('clicka clickb', [clicked1, clicked2, clicked3])
-document.trigger(['clicka', 'clickb'])
-
-
-class ClickEvent(Event):
-
-    def __init__(self):
-        self.on(self.clicked1)
-        self.on(self.clicked2)
-        self.on(self.clicked3)
-
-    def clicked1(self):
-        print('clicked1.')
-
-    def clicked2(self):
-        print('clicked2.')
-
-    def clicked3(self):
-        print('clicked3.')
-
-print('Add an event with predefined event object that contains many handlers attached:')
-click_event = ClickEvent()
-click_event2 = ClickEvent()
-document = Observable()
-document.on('click', click_event)  # create document event with event instance
-document.on('click', click_event2)  # replace document event behaviour
-document.on('click click_alias', click_event)  # events have the same reference
-document.trigger(['click', 'click_alias'])
-
-print('Create many document events with a dictionary:')
-document = Observable()
-document.on({
-    'click click_alias': click_event,
-    'clicka clickb': [clicked1, clicked2, clicked3],
-    'click1': clicked1,
-    'click2': clicked2,
-    'click3': clicked3})
-document.click()
-document.clicka.trigger()
-document.clickb.trigger()
-document.trigger(['click1', 'click2', 'click3'])
-
 # TODO? document.trigger('click mouseenter')
-# TODO? descritor para adicionar a test a w.events automaticamente
+# TODO? descritor para adicionar a event a w.events automaticamente
 
 
 class Handler:
