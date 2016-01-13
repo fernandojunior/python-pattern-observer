@@ -2,7 +2,7 @@
 Observer
 ========
 
-A observer pattern implementation in Python.
+A observer pattern implementation in Python based on jQuery.
 --------------------------------------------
 
 The observer pattern is a software design pattern in which an object, called
