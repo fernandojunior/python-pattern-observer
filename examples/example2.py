@@ -1,67 +1,110 @@
-# Exemplo para acoplar o observable ao evento.
-# É utilizando o padrao de projeto Templated Method.
-from observer import Event, Observable
+# Example based in:
+# http://stackoverflow.com/questions/20473563/python-qt4-passing-arguments-in-qtcore-qobject-connect
+from observer import Observable, Event
 
 
-class WindowEvent(Event):
+class RightButton:
+    pass
 
-    def __init__(self, window):
-        assert(isinstance(window, Window))
-        self.window = window
+
+class LeftButton:
+    pass
+
+
+class MouseEvent(Event):
+
+    def __init__(self):
         self.on(self.handler)
 
-    def handler(self):  # teamplte method
-        pass
+    def __repr__(self):
+        return '{} ({},{})'.format(self.button.__name__, self.x, self.y)
+
+    def handler(self, x, y, button):
+        self.x = x
+        self.y = y
+        self.button = button
+        print('\tMouse clicked {}'.format(self))
 
 
-class Enviar(WindowEvent):
+class Label(Observable):
 
-    def handler(self, a):
-        assert(isinstance(self.window, Window))
-        assert(a == '1')
-        print('enviar was called')
+    def __init__(self, name):
+        self.name = name
+        self.on('click', self.clicked)
 
+    def __repr__(self):
+        return self.name
 
-class Receber(WindowEvent):
-
-    def handler(self, *args):
-        print('receber was called ', args)
-
-
-class Receber2(WindowEvent):
-
-    def handler(self, *args):
-        assert(isinstance(self.window, Window))
-        print('receber2 was called ', args)
+    def clicked(self, e):  # default handler
+        print('\tLabel \'{}\' clicked'.format(self))
 
 
 class Window(Observable):
 
-    def __init__(self):
-        self.title = 'Hello World.'
+    def __init__(self, rows, cols):
+        self.widgets = [[None for x in range(rows)] for x in range(cols)]
+        self.build()
 
-        print('Create and trigger enviar event:')
-        self.on('enviar', Enviar(self))
-        self.enviar.trigger('1')
+    def __repr__(self):
+        return self.__class__.__name__ + ' Window'
 
-        print('Create and trigger receber event:')
-        self.receber = Receber(self)
-        self.receber.trigger('a', 'b', 2)
+    def build(self):  # abstract method to build events, widgets, etc.
+        pass
 
-        print('Replace and trigger receber event:')
-        self.on('receber', Receber2(self))  # replace all event behaviour
-        self.receber.trigger('a', 'b', 2)
+    def widget(self, x, y, widget=None):  # get [or add] a widget
+        if widget:
+            self.widgets[x][y] = widget
+        return self.widgets[x][y]
 
-        print('Create alias from receber event and trigger it:')
-        self.on('receber2', self.events['receber'])  # receber2 == receber
-        self.receber2.trigger('a', 'b', 2)
-        assert(self.events['receber'] == self.events['receber2'])
+    def show(self):
+        print('Show {} Window:'.format(self.__class__.__name__))
+        for row in self.widgets:
+            print('\t', ' '.join([str(y or '.') for y in row]))
 
-        def receber3(*args):
-            print('receber3 was called ', args)
 
-        print('Add new handler to receber event:')
-        self.on('receber', receber3)  # add new handler to the event
-        self.receber2.trigger('a', 'b', 2)
+class Test(Window):
 
-w = Window()
+    def build(self):  # template method
+        self.on('click', self.clicked)
+        self.widget(0, 0, Label('a'))
+        self.widget(0, 4, Label('b')).click.on(self.label_clicked)  # add other
+
+    def label_clicked(self, e):
+        label = self.widget(e.x, e.y)
+        print('\tLabel \'{}\' clicked. Custom handler.'.format(label))
+
+    def clicked(self, e):
+        print('\t{} clicked'.format(self))
+        self.widget(e.x, e.y).click.trigger(e)
+
+
+def click_simulator(x, y, btn, window):
+    print('Clicking {} at ({},{}) of Window:'.format(btn.__name__, x, y))
+    mouse_event = MouseEvent()
+    mouse_event.trigger(x, y, btn)
+    window.click.trigger(mouse_event)
+
+if __name__ == '__main__':
+    test = Test(5, 5)
+    test.show()
+    click_simulator(0, 0, RightButton, test)
+    click_simulator(0, 4, LeftButton, test)
+
+"""
+Result:
+    Show Test Window:
+        a . . . b
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+    Clicking RightButton at (0,0) of Window:
+        Mouse clicked RightButton (0,0)
+        Test Window clicked
+        Label 'a' clicked
+    Clicking LeftButton at (0,4) of Window:
+        Mouse clicked LeftButton (0,4)
+        Test Window clicked
+        Label 'b' clicked. Custom handler.
+        Label 'b' clicked
+"""

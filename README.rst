@@ -194,6 +194,17 @@ Add many events with a dictionary:
     # Output:
     # ...
 
+Running Tests
+-------------
+
+If you're making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
+
+    $ flake8 observer.py tests.py
+    $ python -m tests.py
+    $ tox
+
+    To get flake8 and tox, just pip install them into your virtualenv [#]_.
+
 Synonyms
 ------------
 
@@ -225,6 +236,7 @@ References
 .. [#] https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
 .. [#] http://api.jquery.com/trigger/
 .. [#] http://api.jquery.com/on/
+.. [#] https://virtualenv.readthedocs.org/en/latest/
 
 Links
 -----
