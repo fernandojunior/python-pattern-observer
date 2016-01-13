@@ -2,6 +2,9 @@
 Observer
 ========
 
+.. image:: https://img.shields.io/travis/fernandojunior/anerp.svg
+        :target: https://travis-ci.org/fernandojunior/anerp
+
 A observer pattern implementation in Python based on jQuery.
 ------------------------------------------------------------
 
