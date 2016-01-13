@@ -203,7 +203,7 @@ If you're making changes, check that your changes pass flake8 and the tests, inc
     $ python -m tests.py
     $ tox
 
-    To get flake8 and tox, just pip install them into your virtualenv [#]_.
+To get flake8 and tox, just pip install them into your virtualenv [#]_.
 
 Synonyms
 ------------
