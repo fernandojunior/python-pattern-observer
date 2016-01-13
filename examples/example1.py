@@ -93,6 +93,7 @@ three_event = ThreeEvent()
 subject.on(['three', 'three_alias'], three_event)  # events with same reference
 assert(three_event is subject.three)
 assert(subject.three is subject.three_alias)
+subject.trigger('three three_alias', 1, 2, a=3, b=4)
 
 
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico
