@@ -118,7 +118,8 @@ Two events that contains the same handlers attached:
     document.on('clicka clickb', [clicked1, clicked2, clicked3])
 
     # Trigger two events at once:
-    document.trigger(['clicka', 'clickb'])
+    document.trigger(['clicka', 'clickb'])  # or
+    document.trigger('clicka clickb')
 
     # Output:
     # clicked1.

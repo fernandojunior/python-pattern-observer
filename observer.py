@@ -32,6 +32,8 @@ class Event(object):
 
     def on(self, handler):
         """Attach a handler (any Python callable) for the event."""
+        if not hasattr(handler, '__call__'):
+            raise TypeError('handler is not a callable object.')
         self.handlers.add(handler)
 
     def off(self, handler):
@@ -87,10 +89,13 @@ class Observable(object):
         """
         Execute all event handlers with optional arguments for the observable.
         """
-        e = args[0]
-        e = e.split(' ') if isinstance(e, str) and ' ' in e else e
-        if isinstance(e, list):  # event is a list of event
-            for each in e:
+        event = args[0]
+
+        if isinstance(event, str) and ' ' in event:
+            event = event.split(' ')  # split event names ...
+
+        if isinstance(event, list):  # event is a list of events
+            for each in event:
                 self.events[each].trigger(*args[1:], **kargs)
         else:
-            self.events[e].trigger(*args[1:], **kargs)
+            self.events[event].trigger(*args[1:], **kargs)

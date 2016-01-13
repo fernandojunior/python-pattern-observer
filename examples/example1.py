@@ -45,7 +45,6 @@ subject.off('many')  # remove an event from subject
 assert('many' not in subject.events)
 try:
     subject.many
-    assert(False)
 except:
     assert(True)
 
@@ -94,6 +93,16 @@ subject.on(['three', 'three_alias'], three_event)  # events with same reference
 assert(three_event is subject.three)
 assert(subject.three is subject.three_alias)
 subject.trigger('three three_alias', 1, 2, a=3, b=4)
+
+
+class NotCallable:
+    pass
+
+subject = Observable()
+try:
+    subject.on('error', NotCallable())  # handler must be callable
+except:
+    assert(True)
 
 
 # TODO: mecanismo para parar a propagacao de uma mensagem em topico
