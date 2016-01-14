@@ -38,7 +38,7 @@ Installation
 
 .. code-block:: bash
 
-    pip install pattern-observer
+    $ pip install pattern-observer
 
 Alternatively, download the source **observer.py** and put it in the root
 directory of your project.
@@ -206,13 +206,13 @@ Contributing
 ------------
 
 If you're making changes, check that your changes pass flake8 and the tests,
-including testing other Python versions with tox::
+including testing other Python versions with tox:
 
 .. code-block:: bash
 
-    flake8 observer.py tests.py
-    python -m tests.py
-    tox
+    $ flake8 observer.py tests.py
+    $ python -m tests.py
+    $ tox
 
 To get flake8 and tox, just pip install them into your virtualenv.
 
