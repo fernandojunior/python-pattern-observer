@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from setuptools import setup, find_packages
+from setuptools import setup
 
 # Gives the relative path of a file from the setup.py
 relpath = lambda filename: os.path.join(os.path.dirname(__file__), filename)
@@ -33,7 +33,7 @@ setup(
     license='MIT License',
     long_description=README,
     name='observer',
-    packages=find_packages(exclude=['tests']),
+    py_modules='observer',
     platforms='any',
     url='https://github.com/fernandojunior/observer',
     version='1.0.0',
