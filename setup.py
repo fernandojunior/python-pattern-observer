@@ -33,7 +33,7 @@ setup(
     license='MIT License',
     long_description=README,
     name='pattern-observer',
-    py_modules='observer',
+    py_modules=['observer'],
     platforms='any',
     url='https://github.com/fernandojunior/observer',
     version='1.0.0',
