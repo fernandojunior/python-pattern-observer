@@ -2,6 +2,12 @@
 Observer
 ========
 
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+        :target: https://github.com/fernandojunior/observer/blob/master/LICENSE.rst
+
+.. image:: https://img.shields.io/pypi/status/pattern-observer.svg
+        :target: https://pypi.python.org/pypi/pattern-observer
+
 .. image:: http://img.shields.io/pypi/v/pattern-observer.svg
         :target: https://pypi.python.org/pypi/pattern-observer
 
@@ -10,9 +16,6 @@ Observer
 
 .. image:: https://img.shields.io/codecov/c/github/fernandojunior/observer.svg
         :target: https://codecov.io/github/fernandojunior/observer
-
-.. image:: https://img.shields.io/badge/license-MIT-blue.svg
-        :target: https://github.com/fernandojunior/observer/blob/master/LICENSE.rst
 
 The observer pattern is a software design pattern in which an object, called
 the subject, maintains a list of its dependents, called observers, and notifies
