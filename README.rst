@@ -2,6 +2,9 @@
 Observer
 ========
 
+.. image:: http://img.shields.io/pypi/v/pattern-observer.svg
+        :target: https://pypi.python.org/pypi/pattern-observer
+
 .. image:: https://img.shields.io/travis/fernandojunior/observer.svg
         :target: https://travis-ci.org/fernandojunior/observer
 
