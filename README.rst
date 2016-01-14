@@ -31,12 +31,7 @@ will be called **events**. The observer module has only two members: Event and
 Observable. An **Observable** instance allows you connect different handlers to
 its events. A handler can be any function, method or callable object.
 
-A simpler implementation of the pattern can be found at **observer.old.py**.
-
-Version
--------
-
-Switch the branch menu to get the current version.
+A simpler implementation of the pattern can be found at **old.py**.
 
 Installation
 ------------
@@ -238,12 +233,6 @@ Author
 ------
 
 Fernando Felix do Nascimento Junior.
-
-
-Keywords
---------
-
-python, design pattern, observer, publish–subscribe, jquery
 
 License
 -------
