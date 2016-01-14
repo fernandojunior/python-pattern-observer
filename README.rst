@@ -5,6 +5,9 @@ Observer
 .. image:: https://img.shields.io/travis/fernandojunior/observer.svg
         :target: https://travis-ci.org/fernandojunior/observer
 
+.. image:: https://img.shields.io/codecov/c/github/fernandojunior/observer.svg
+        :target: https://codecov.io/github/fernandojunior/observer
+
 A observer pattern implementation in Python based on jQuery.
 ------------------------------------------------------------
 
