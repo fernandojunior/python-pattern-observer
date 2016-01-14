@@ -8,6 +8,9 @@ Observer
 .. image:: https://img.shields.io/codecov/c/github/fernandojunior/observer.svg
         :target: https://codecov.io/github/fernandojunior/observer
 
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+        :target: https://github.com/fernandojunior/observer/blob/master/LICENSE
+
 A observer pattern implementation in Python based on jQuery.
 ------------------------------------------------------------
 
