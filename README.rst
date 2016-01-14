@@ -5,10 +5,10 @@ Observer
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
         :target: https://github.com/fernandojunior/observer/blob/master/LICENSE.rst
 
-.. image:: https://img.shields.io/pypi/status/pattern-observer.svg
+.. image:: http://img.shields.io/pypi/v/pattern-observer.svg
         :target: https://pypi.python.org/pypi/pattern-observer
 
-.. image:: http://img.shields.io/pypi/v/pattern-observer.svg
+.. image:: https://img.shields.io/pypi/status/pattern-observer.svg
         :target: https://pypi.python.org/pypi/pattern-observer
 
 .. image:: https://img.shields.io/travis/fernandojunior/observer.svg
