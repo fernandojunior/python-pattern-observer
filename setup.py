@@ -35,7 +35,7 @@ setup(
     name='pattern-observer',
     py_modules=['observer'],
     platforms='any',
-    url='https://github.com/fernandojunior/observer',
+    url='https://github.com/fernandojunior/python-pattern-observer',
     version='1.0.0',
     zip_safe=False
 )
