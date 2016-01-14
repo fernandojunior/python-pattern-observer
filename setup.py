@@ -32,7 +32,7 @@ setup(
     keywords='observer design pattern',
     license='MIT License',
     long_description=README,
-    name='observer',
+    name='pattern-observer',
     py_modules='observer',
     platforms='any',
     url='https://github.com/fernandojunior/observer',
