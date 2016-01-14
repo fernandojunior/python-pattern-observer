@@ -3,7 +3,7 @@
 Observer
 ========
 
-A observer pattern implementation in Python based on jQuery.
+An observer pattern implementation in Python based on jQuery.
 
 :author:
     Fernando Felix do Nascimento Junior
