@@ -14,8 +14,8 @@ Observer
 .. image:: https://img.shields.io/travis/fernandojunior/python-pattern-observer.svg
         :target: https://travis-ci.org/fernandojunior/python-pattern-observer
 
-.. image:: https://img.shields.io/codecov/c/github/fernandojunior/observer.svg
-        :target: https://codecov.io/github/fernandojunior/observer
+.. image:: https://img.shields.io/codecov/c/github/fernandojunior/python-pattern-observer.svg
+        :target: https://codecov.io/github/fernandojunior/python-pattern-observer
 
 The observer pattern is a software design pattern in which an object, called
 the subject, maintains a list of its dependents, called observers, and notifies
