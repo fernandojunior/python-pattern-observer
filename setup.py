@@ -1,14 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-import os
 from setuptools import setup
 
-# Gives the relative path of a file from the setup.py
-relpath = lambda filename: os.path.join(os.path.dirname(__file__), filename)
-
 # Read the README file
-README = open(relpath('README.rst')).read()
+with open("README.rst") as f:
+    README = f.read()
 
 setup(
     author='Fernando Felix do Nascimento Junior',
@@ -27,7 +21,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-    ],  # see more: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    ],
     description='A observer pattern implementation in Python based on jQuery.',
     keywords='observer design pattern',
     license='MIT License',
